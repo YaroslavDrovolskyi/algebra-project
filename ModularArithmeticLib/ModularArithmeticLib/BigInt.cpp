@@ -247,28 +247,6 @@ BigInt operator*(const BigInt& a, const BigInt& b) {
 	return result;
 }
 
-
-std::pair<BigInt, int> BigInt::AbsShortDivision(int b) {
-	assert(b != 0 && "Division by zero is impossible");
-	assert(!this->is_negative_ && b > 0 && "Impossible to get carry from dividing by negative");
-	//	b = abs(b); // to avoid sign conflict
-
-	BigInt fraction;
-	int carry = 0;
-	for (int i = this->numbers_.size() - 1; i >= 0; i--) {
-		long long current = this->numbers_[i] + carry * 1ll * base;
-		fraction.numbers_.push_back(current / b);
-		carry = current % b;
-	}
-	std::reverse(fraction.numbers_.begin(), fraction.numbers_.end());
-	fraction.RemoveBeginZeros();
-
-	std::pair<BigInt, int> result;
-	result.first = fraction;
-	result.second = carry;
-	return result;
-}
-
 BigInt operator/(const BigInt& a, int b) {
 	assert(b != 0 && "Division by zero is impossible");
 	BigInt fraction;

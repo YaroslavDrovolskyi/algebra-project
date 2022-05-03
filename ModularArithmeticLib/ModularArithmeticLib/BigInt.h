@@ -56,7 +56,7 @@ extern "C++" {
 		std::string GetString();
 		void Print();
 
-		std::pair<BigInt, int>AbsShortDivision(int b);
+//		std::pair<BigInt, int>AbsShortDivision(int b);
 
 		BigInt& operator++() {
 			*this = *this + 1;

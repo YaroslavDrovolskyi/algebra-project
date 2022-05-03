@@ -151,12 +151,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BigInt.h" />
+    <ClInclude Include="BigModInt.h" />
     <ClInclude Include="FiniteField.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Polynomial.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BigInt.cpp" />
+    <ClCompile Include="BigModInt.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="FiniteField.cpp" />
     <ClCompile Include="pch.cpp">

@@ -6,7 +6,7 @@ number Polynomial::valueAtPoint(number point)
 	this->removeZeros();
 	number res = 0;
 	for (int i = 0; i < polynomial.size(); ++i) {
-		res += (pow(point, i)*polynomial[i]);
+		res += (pow(point, i) * polynomial[i]);
 	}
 	return res;
 }
@@ -16,7 +16,7 @@ Polynomial Polynomial::differentiation()
 	this->removeZeros();
 	std::vector<number> res = std::vector<number>(polynomial.size() - 1);
 	for (int i = 0; i < res.size(); ++i) {
-		res[i] = polynomial[i+1]*(i+1);
+		res[i] = polynomial[i + 1] * (i + 1);
 	}
 	return Polynomial(res);
 }
@@ -29,6 +29,8 @@ Polynomial Polynomial::removeZeros() {
 }
 
 std::pair<Polynomial, Polynomial> Polynomial::divide(Polynomial& pol) {
+	pol.removeZeros();
+	this->removeZeros();
 	if (pol.getPolynomial().size() > this->polynomial.size()) {
 		return std::make_pair(Polynomial(), this->polynomial);
 	}
@@ -46,7 +48,7 @@ std::pair<Polynomial, Polynomial> Polynomial::divide(Polynomial& pol) {
 			continue;
 		}
 		else {
-			fraction[currentIndex] = remainder[remainder.size() - 1 - i] / pol.getPolynomial()[polSize - 1 - i];
+			fraction[currentIndex] = remainder[remainder.size() - 1 - i] / pol.getPolynomial()[polSize - 1];
 		}
 		for (int j = 0; j < polSize; ++j) {
 			remainder[this->polynomial.size() - 1 - j - i] -= pol.getPolynomial()[polSize - 1 - j] * fraction[currentIndex];
@@ -60,25 +62,33 @@ Polynomial Polynomial::gcd(Polynomial& pol) {
 	Polynomial pol1;
 	Polynomial pol2;
 	if (pol.getPolynomial().size() > this->polynomial.size()) {
-		pol1 = pol.getPolynomial();
-		pol2 = this->polynomial;
-	} else if (pol.getPolynomial().size() < this->polynomial.size()) {
-		pol1 = this->polynomial;
-		pol2 = pol.getPolynomial();
-	} else {
+		pol1 = pol;
+		pol2 = *this;
+	}
+	else if (pol.getPolynomial().size() < this->polynomial.size()) {
+		pol1 = *this;
+		pol2 = pol;
+	}
+	else {
 		if (abs(pol.getPolynomial()[pol.getPolynomial().size() - 1]) >= abs(this->polynomial[this->polynomial.size() - 1])) {
-			pol1 = pol.getPolynomial();
-			pol2 = this->polynomial;
-		} else {
-			pol1 = this->polynomial;
-			pol2 = pol.getPolynomial();
+			pol1 = pol;
+			pol2 = *this;
+		}
+		else {
+			pol1 = *this;
+			pol2 = pol;
 		}
 	}
-
+	if (pol2.getPolynomial().size() == 1) {
+		std::vector<number> tmp;
+		tmp.push_back(1);
+		return Polynomial(tmp);
+	}
 	std::pair<Polynomial, Polynomial> tmp = pol1.divide(pol2);
 	if (tmp.second.getPolynomial()[tmp.second.getPolynomial().size() - 1] == 0) {
 		return pol2;
-	} else {
+	}
+	else {
 		return pol2.gcd(tmp.second);
 	}
 }

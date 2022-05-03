@@ -7,6 +7,8 @@ using number = double;
 class Polynomial {
 private:
 	std::vector<number> polynomial;
+
+	Polynomial removeZeros();
 public:
 	Polynomial() {
 		polynomial = std::vector<number>();
@@ -26,7 +28,6 @@ public:
 
 	number valueAtPoint(number point);
 	Polynomial differentiation();
-	Polynomial removeZeros();
 
 	std::pair<Polynomial, Polynomial> divide(Polynomial& pol); // we get fraction and remainder as the return values
 	Polynomial gcd(Polynomial& pol);

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 
-using number = long long;
+using number = double;
 
 class Polynomial {
 private:
@@ -26,7 +26,8 @@ public:
 
 	number valueAtPoint(number point);
 	Polynomial differentiation();
+	Polynomial removeZeros();
 
 	std::pair<Polynomial, Polynomial> divide(Polynomial& pol); // we get fraction and remainder as the return values
-	//Polynomial gcd();
+	Polynomial gcd(Polynomial& pol);
 };

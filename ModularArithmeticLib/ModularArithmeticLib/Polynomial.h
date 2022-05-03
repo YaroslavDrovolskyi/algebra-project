@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 
+using uint = unsigned int;
+
 class Polynomial {
 private:
 	std::vector<long long> polynomial;

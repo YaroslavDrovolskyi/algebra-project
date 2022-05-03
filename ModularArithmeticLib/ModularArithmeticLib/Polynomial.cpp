@@ -3,6 +3,7 @@
 
 number Polynomial::valueAtPoint(number point)
 {
+	this->removeZeros();
 	number res = 0;
 	for (int i = 0; i < polynomial.size(); ++i) {
 		res += (pow(point, i)*polynomial[i]);
@@ -12,6 +13,7 @@ number Polynomial::valueAtPoint(number point)
 
 Polynomial Polynomial::differentiation()
 {
+	this->removeZeros();
 	std::vector<number> res = std::vector<number>(polynomial.size() - 1);
 	for (int i = 0; i < res.size(); ++i) {
 		res[i] = polynomial[i+1]*(i+1);

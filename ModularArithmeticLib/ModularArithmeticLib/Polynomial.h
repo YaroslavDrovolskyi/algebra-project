@@ -24,6 +24,9 @@ public:
 		return polynomial;
 	}
 
+	number valueAtPoint(number point);
+	Polynomial differentiation();
+
 	std::pair<Polynomial, Polynomial> divide(Polynomial& pol); // we get fraction and remainder as the return values
 	//Polynomial gcd();
 };

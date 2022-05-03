@@ -6,21 +6,21 @@ using number = long long;
 
 class Polynomial {
 private:
-	std::vector<long long> polynomial;
+	std::vector<number> polynomial;
 public:
 	Polynomial() {
-		polynomial = std::vector<long long>();
+		polynomial = std::vector<number>();
 	}
 
-	Polynomial(std::vector<long long> pol) {
+	Polynomial(std::vector<number> pol) {
 		polynomial = pol;
 	}
 
-	void setPolynomial(std::vector<long long> pol) {
+	void setPolynomial(std::vector<number> pol) {
 		polynomial = pol;
 	}
 
-	std::vector<long long> getPolynomial() {
+	std::vector<number> getPolynomial() {
 		return polynomial;
 	}
 

@@ -2,7 +2,7 @@
 #include <iostream>
 #include <vector>
 
-using uint = unsigned int;
+using number = long long;
 
 class Polynomial {
 private:
@@ -24,6 +24,8 @@ public:
 		return polynomial;
 	}
 
+	number valueAtPoint(number point);
+
 	std::pair<Polynomial, Polynomial> divide(Polynomial& pol); // we get fraction and remainder as the return values
-	Polynomial gcd();
+	//Polynomial gcd();
 };

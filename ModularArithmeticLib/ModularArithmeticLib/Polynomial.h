@@ -31,4 +31,8 @@ public:
 
 	std::pair<Polynomial, Polynomial> divide(Polynomial& pol); // we get fraction and remainder as the return values
 	Polynomial gcd(Polynomial& pol);
+
+	Polynomial operator+(const Polynomial& second)const;
+	Polynomial operator-(const Polynomial& second)const;
+	Polynomial operator*(const Polynomial& second)const;
 };

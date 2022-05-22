@@ -92,3 +92,37 @@ Polynomial Polynomial::gcd(Polynomial& pol) {
 		return pol2.gcd(tmp.second);
 	}
 }
+
+Polynomial Polynomial::operator+(const Polynomial& second)const {
+	Polynomial result;
+	result.polynomial.resize(std::max(second.polynomial.size(), polynomial.size()));
+	(polynomial.size() < second.polynomial.size()) ? result.setPolynomial(second.polynomial) : result.setPolynomial(polynomial);
+	for (size_t i = 0; i != std::min(polynomial.size(), second.polynomial.size()); ++i) {
+		result.polynomial[i] = polynomial[i] + second.polynomial[i];
+	}
+	result.removeZeros();
+	return result;
+}
+
+Polynomial Polynomial::operator-(const Polynomial& second)const {
+	Polynomial result;
+	result.polynomial.resize(std::max(second.polynomial.size(), polynomial.size()));
+	(polynomial.size() < second.polynomial.size()) ? result.setPolynomial(second.polynomial) : result.setPolynomial(polynomial);
+	for (size_t i = 0; i != std::min(polynomial.size(), second.polynomial.size()); ++i) {
+		result.polynomial[i] = polynomial[i] - second.polynomial[i];
+	}
+	result.removeZeros();
+	return result;
+}
+
+Polynomial Polynomial::operator*(const Polynomial& second)const {
+	Polynomial result;
+	result.polynomial.resize(polynomial.size() + second.polynomial.size());
+	for (size_t i = 0; i != polynomial.size(); ++i) {
+		for (size_t j = 0; j != second.polynomial.size(); ++j) {
+			result.polynomial[i + j] += polynomial[i] * second.polynomial[j];
+		}
+	}
+	result.removeZeros();
+	return result;
+}

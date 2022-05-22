@@ -492,3 +492,15 @@ BigInt pow(BigInt basis, BigInt exponent) {
 	}
 	return result;
 }
+
+BigInt gcdExtended(BigInt a, BigInt b, BigInt* x, BigInt* y) {
+    if (a == 0) {
+        *x = 0, *y = 1;
+        return b;
+    }
+    BigInt x1, y1;
+    BigInt gcd = gcdExtended(b % a, a, &x1, &y1);
+    *x = y1 - (b / a) * x1;
+    *y = x1; 
+    return gcd;
+}

@@ -27,6 +27,8 @@ extern "C++" {
 		friend BigModInt operator+(const BigModInt& a, const BigModInt& b);
 		friend BigModInt operator-(const BigModInt& a, const BigModInt& b);
 		friend BigModInt operator*(const BigModInt& a, const BigModInt& b);
+		friend BigModInt operator/(const BigModInt& a, const BigModInt& b);
+		friend BigModInt inverse(const BigModInt&a);
 	};
 }
 

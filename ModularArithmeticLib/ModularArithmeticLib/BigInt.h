@@ -35,7 +35,8 @@ extern "C++" {
 		friend int Compare(const BigInt& a, const BigInt& b);
 		friend std::pair<BigInt, BigInt> Divide(BigInt& a, BigInt& b);
 		friend BigInt abs(const BigInt& a);
-
+		
+		friend BigInt gcdExtended(BigInt a, BigInt b, BigInt* x, BigInt* y);
 
 
 	public:

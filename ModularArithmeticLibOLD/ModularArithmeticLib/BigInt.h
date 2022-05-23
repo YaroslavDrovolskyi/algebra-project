@@ -18,7 +18,7 @@ std::size_t GetNumberOfDigits(int value);
 
 
 extern "C++" {
-	class BigInt {
+	class MODULARARITHMETICLIB_API BigInt {
 	private:
 		bool is_negative_;
 		std::vector<int> numbers_;

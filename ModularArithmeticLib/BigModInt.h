@@ -3,17 +3,12 @@
 #ifndef BIGMODINT_H
 #define BIGMODINT_H
 
-#ifdef MODULARARITHMETICLIB_EXPORTS
-#define MODULARARITHMETICLIB_API __declspec(dllexport)
-#else
-#define MODULARARITHMETICLIB_API __declspec(dllimport)
-#endif
-
+#include "ModularArithmeticLib_global.h"
 #include "BigInt.h"
 
 
 extern "C++" {
-	class BigModInt{
+    class MODULARARITHMETICLIB_EXPORT BigModInt{
 	private:
 		BigInt number;
 		BigInt modulus;

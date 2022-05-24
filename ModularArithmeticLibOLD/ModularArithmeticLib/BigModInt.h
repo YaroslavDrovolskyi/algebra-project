@@ -22,13 +22,29 @@ extern "C++" {
 		BigModInt(const BigInt& number, const BigInt& modulus);
 
 
+		BigInt getNumber() {
+			return number;
+		}
 
+		void setNumber() {
+			this->number = number;
+		}
+
+		BigInt getModulus() {
+			return number;
+		}
+
+		void setModulus() {
+			this->number = number;
+		}
 
 		friend BigModInt operator+(const BigModInt& a, const BigModInt& b);
 		friend BigModInt operator-(const BigModInt& a, const BigModInt& b);
 		friend BigModInt operator*(const BigModInt& a, const BigModInt& b);
 		friend BigModInt operator/(const BigModInt& a, const BigModInt& b);
 		friend BigModInt inverse(const BigModInt&a);
+
+		friend bool operator==(const BigModInt& a, const BigModInt& b);
 	};
 }
 

@@ -51,3 +51,7 @@ BigModInt inverse(const BigModInt&a) {
 	return BigModInt(result_number,a.modulus);
 }
 
+bool operator==(const BigModInt& a, const BigModInt& b) {
+	return (a.modulus == b.modulus && a.number == b.number);
+}
+

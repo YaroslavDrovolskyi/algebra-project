@@ -1,15 +1,111 @@
 #include "ModPolynomial.h"
-
+#include <sstream>
 ModPolynomial ModPolynomial::removeZeros() {
+    if (this->modPolynomial.empty()) return this->modPolynomial;
     BigModInt zero(0, this->modPolynomial[0].getModulus());
     while (this->modPolynomial[this->modPolynomial.size() - 1] == zero && this->modPolynomial.size() > 1) {
         this->modPolynomial.pop_back();
     }
     return this->modPolynomial;
 }
+bool ModPolynomial::isCorrect(std::string input)
+{
+    std::string str = input;
+    bool isKoef = false;
+    bool isX = false;
+    bool isSC = false;
+    bool isInd = false;
+    int index = INT_MAX;
+    int tmp = 0;
+    str.erase(remove(str.begin(), str.end(), ' '), str.end());
+    bool isNumber = false;
+    for (int i = str.size() - 1; i >= 0; --i) {
+        if (i == str.size() - 1)
+            if (str[i] >= '0' && str[i] <= '9') continue;
+            else return false;
+        else if (str[i] >= '0' && str[i] <= '9') continue;
+        else if (str[i] == 'd' && i >= 2 && str[i - 1] == 'o' && str[i - 2] == 'm') {
+            str.erase(str.begin() + i - 2, str.end());
+            break;
+        }
+        else return false;
+    }
+    while (!str.empty()) {
+        if ((!isKoef && !isX && !isSC && !isInd)) {
+            if (str[0] >= '0' && str[0] <= '9' || str[0] == '+' || str[0] == '-') isKoef = true;
+            else if (str[0] == 'x')isX = true;
+            else
+                return false;
+
+        }
+        else if (isKoef == true) {
+            isKoef = false;
+            if (str[0] >= '0' && str[0] <= '9') isKoef = true;
+            else if (str[0] == 'x')  isX = true;
+            else if (str[0] == '*') {
+                str.erase(0, 1);
+                if (str.empty()) return false;
+                if (str[0] == 'x') isX = true;
+                else return false;
+            }
+            else
+                return false;
+        }
+        else if (isX == true) {
+            isX = false;
+            if (str[0] == '^') {
+                isSC = true;
+            }
+            else if (str[0] == '+' || str[0] == '-') {
+                tmp = 1;
+                if (tmp >= index) return false;
+                index = tmp;
+                tmp = 0;
+                isKoef = true;
+            }
+            else return false;
+        }
+        else if (isSC) {
+            isSC = false;
+            if (str[0] >= '0' && str[0] <= '9') {
+                isInd = true;
+                tmp *= 10;
+                tmp += str[0] - '0';
+            }
+            else
+                return false;
+        }
+        else if (isInd) {
+            isInd = false;
+            if (str[0] >= '0' && str[0] <= '9') {
+                isInd = true;
+                tmp *= 10;
+                tmp += str[0] - '0';
+            }
+            else {
+                if (tmp >= index) return false;
+                index = tmp;
+                tmp = 0;
+                if (str[0] == '+' || str[0] == '-') isKoef = true;
+                else if (str[0] == 'x') isX = true;
+                else return false;
+            }
+
+        }
+        str.erase(0, 1);
+    }
+    if (isX && index <= 1) {
+        return false;
+    }
+    return (isKoef || isX || isInd);
+}
+
 
 ModPolynomial::ModPolynomial(std::string pol)
 {
+    if (!this->isCorrect(pol))
+        throw std::invalid_argument("incorrect input");
+    std::string polForExp;
     std::vector<BigInt> koefs;
     std::vector<BigModInt> modKoefs;
     BigInt mod, koef;
@@ -45,15 +141,15 @@ ModPolynomial::ModPolynomial(std::string pol)
             }
             else if (koef == 0)
                 koef = 1;
-            if (isPositiveNumber) {
+            if ((i == pol.size() - 1 || pol[i + 1] < '0' || pol[i + 1] > '9') && isPositiveNumber) {
                 isPositiveNumber = 0;
                 koefs.push_back(koef);
             }
-            else if (isNegativeNumber) {
+            else if ((i == pol.size() - 1 || pol[i + 1] < '0' || pol[i + 1] > '9') && isNegativeNumber) {
                 isNegativeNumber = 0;
                 koefs.push_back(-1 * koef);
             }
-            else if (isMod) {
+            else if ((i == pol.size() - 1 || pol[i + 1] < '0' || pol[i + 1] > '9') && isMod) {
                 isMod = 0;
                 mod = koef;
             }
@@ -63,7 +159,6 @@ ModPolynomial::ModPolynomial(std::string pol)
     for (int i = koefs.size() - 1; i >= 0; --i) {
         modKoefs.push_back(BigModInt(koefs[i], mod));
     }
-
     modPolynomial = modKoefs;
 
 }

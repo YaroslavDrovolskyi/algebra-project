@@ -10,6 +10,8 @@ private:
 	std::vector<number> polynomial;
 
 	Polynomial removeZeros();
+    std::string numberToSting(number);
+    bool isCorrect(std::string input);
 public:
 	Polynomial() {
 		polynomial = std::vector<number>();
@@ -36,4 +38,8 @@ public:
 	Polynomial operator+(const Polynomial& second)const;
 	Polynomial operator-(const Polynomial& second)const;
 	Polynomial operator*(const Polynomial& second)const;
+
+    std::string toString();
+
+    friend std::ostream& operator<< (std::ostream& out, Polynomial& a);
 };

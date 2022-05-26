@@ -1,5 +1,49 @@
 #include "Polynomial.h"
 
+Polynomial::Polynomial(std::string pol)
+{
+    std::vector<number> koefs;
+    number koef;
+    bool isPositiveNumber = 0;
+    bool isNegativeNumber = 0;
+    if (pol[0] != '-')
+        pol = '+' + pol;
+
+    for (int i = 0; i < pol.size(); ++i) {
+        if (pol[i] == ' ')
+            continue;
+        if (pol[i] == '+') {
+            isPositiveNumber = 1;
+            koef = 0;
+            continue;
+        }
+        else if (pol[i] == '-') {
+            isNegativeNumber = 1;
+            koef = 0;
+            continue;
+        }
+
+        if (isPositiveNumber || isNegativeNumber) {
+            if (pol[i] >= '0' && pol[i] <= '9') {
+                koef = koef * 10;
+                koef = koef + pol[i] - 48;
+            }
+            else if (koef == 0)
+                koef = 1;
+            if (isPositiveNumber) {
+                isPositiveNumber = 0;
+                koefs.push_back(koef);
+            }
+            else if (isNegativeNumber) {
+                isNegativeNumber = 0;
+                koefs.push_back(-1 * koef);
+            }
+        }
+    }
+    std::reverse(koefs.begin(), koefs.end());
+    polynomial = koefs;
+}
+
 number Polynomial::valueAtPoint(number point)
 {
 	this->removeZeros();

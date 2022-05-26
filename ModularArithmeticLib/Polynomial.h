@@ -18,7 +18,7 @@ public:
 	Polynomial(std::vector<number> pol) {
 		polynomial = pol;
 	}
-
+    Polynomial(std::string pol);
 	void setPolynomial(std::vector<number> pol) {
 		polynomial = pol;
 	}

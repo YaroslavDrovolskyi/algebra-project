@@ -56,6 +56,9 @@ BigModInt inverse(const BigModInt&a) {
     BigInt x, y;
 	assert(gcdExtended(a.number, a.modulus, &x, &y) == 1 && "Inverse doesn't exist");
 	BigInt result_number;
+	while(x<0){
+		x = x + a.modulus;
+	}
 	result_number = (x % a.modulus + a.modulus) % a.modulus;
 	return BigModInt(result_number,a.modulus);
 }

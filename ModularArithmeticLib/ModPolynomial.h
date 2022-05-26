@@ -9,7 +9,7 @@ class MODULARARITHMETICLIB_EXPORT ModPolynomial{
 private:
     std::vector<BigModInt> modPolynomial;
     ModPolynomial removeZeros();
-
+    bool isCorrect(std::string);
 public:
     ModPolynomial() {
         modPolynomial = std::vector<BigModInt>();

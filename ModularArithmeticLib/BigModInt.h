@@ -14,16 +14,28 @@ extern "C++" {
 		BigInt modulus;
 
 	public:
+        BigModInt() { number = BigInt(0); modulus = BigInt(2); }
 		BigModInt(const BigInt& number, const BigInt& modulus);
 
+        BigInt getNumber() {
+            return number;
+        }
 
+        void setNumber(const BigInt& number);
 
+        BigInt getModulus() {
+            return modulus;
+        }
+
+        void setModulus(const BigInt& modulus);
 
 		friend BigModInt operator+(const BigModInt& a, const BigModInt& b);
 		friend BigModInt operator-(const BigModInt& a, const BigModInt& b);
 		friend BigModInt operator*(const BigModInt& a, const BigModInt& b);
 		friend BigModInt operator/(const BigModInt& a, const BigModInt& b);
 		friend BigModInt inverse(const BigModInt&a);
+
+        friend bool operator==(const BigModInt& a, const BigModInt& b);
 	};
 }
 

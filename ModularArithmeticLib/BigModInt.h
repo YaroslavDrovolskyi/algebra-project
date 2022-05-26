@@ -29,16 +29,15 @@ extern "C++" {
 
         void setModulus(const BigInt& modulus);
 
-		friend BigModInt operator+(const BigModInt& a, const BigModInt& b);
-		friend BigModInt operator-(const BigModInt& a, const BigModInt& b);
-		friend BigModInt operator*(const BigModInt& a, const BigModInt& b);
-		friend BigModInt operator/(const BigModInt& a, const BigModInt& b);
-		friend BigModInt inverse(const BigModInt&a);
+        MODULARARITHMETICLIB_EXPORT friend BigModInt operator+(const BigModInt& a, const BigModInt& b);
+        MODULARARITHMETICLIB_EXPORT friend BigModInt operator-(const BigModInt& a, const BigModInt& b);
+        MODULARARITHMETICLIB_EXPORT friend BigModInt operator*(const BigModInt& a, const BigModInt& b);
+        MODULARARITHMETICLIB_EXPORT friend BigModInt operator/(const BigModInt& a, const BigModInt& b);
+        MODULARARITHMETICLIB_EXPORT friend BigModInt inverse(const BigModInt&a);
 
         friend bool operator==(const BigModInt& a, const BigModInt& b);
 	};
 }
-
 
 
 

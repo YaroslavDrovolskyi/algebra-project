@@ -83,8 +83,8 @@ extern "C++" {
         MODULARARITHMETICLIB_EXPORT friend BigInt operator+(const BigInt& a, const BigInt& b);
         MODULARARITHMETICLIB_EXPORT friend BigInt operator-(const BigInt& a, const BigInt& b);
         MODULARARITHMETICLIB_EXPORT friend BigInt operator*(const BigInt& a, const BigInt& b);
-        MODULARARITHMETICLIB_EXPORT friend BigInt operator/(const BigInt& a, int b);
-        MODULARARITHMETICLIB_EXPORT friend BigInt operator%(const BigInt& a, int b);
+//        MODULARARITHMETICLIB_EXPORT friend BigInt operator/(const BigInt& a, int b);
+//        MODULARARITHMETICLIB_EXPORT friend BigInt operator%(const BigInt& a, int b);
         MODULARARITHMETICLIB_EXPORT friend BigInt operator/(const BigInt& a, const BigInt& b);
         MODULARARITHMETICLIB_EXPORT friend BigInt operator%(const BigInt& a, const BigInt& b);
 

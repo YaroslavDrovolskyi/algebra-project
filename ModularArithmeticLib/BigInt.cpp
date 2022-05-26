@@ -245,7 +245,7 @@ BigInt operator*(const BigInt& a, const BigInt& b) {
 
 	return result;
 }
-
+/*
 BigInt operator/(const BigInt& a, int b) {
 	assert(b != 0 && "Division by zero is impossible");
 	BigInt fraction;
@@ -278,6 +278,7 @@ BigInt operator%(const BigInt& a, int b) {
 	BigInt b_big(std::to_string(b));
 	return a - b_big * (a / b);
 }
+*/
 
 bool operator>(const BigInt& a, const BigInt& b) {
 	return Compare(a, b) == -1;

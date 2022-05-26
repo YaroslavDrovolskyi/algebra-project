@@ -8,6 +8,66 @@ ModPolynomial ModPolynomial::removeZeros() {
     return this->modPolynomial;
 }
 
+ModPolynomial::ModPolynomial(std::string pol)
+{
+    std::vector<BigInt> koefs;
+    std::vector<BigModInt> modKoefs;
+    BigInt mod, koef;
+    bool isPositiveNumber = 0;
+    bool isNegativeNumber = 0;
+    bool isMod = 0;
+    if (pol[0] != '-')
+        pol = '+' + pol;
+
+    for (int i = 0; i < pol.size(); ++i) {
+        if (pol[i] == ' ')
+            continue;
+        if (pol[i] == '+') {
+            isPositiveNumber = 1;
+            koef = 0;
+            continue;
+        }
+        else if (pol[i] == '-') {
+            isNegativeNumber = 1;
+            koef = 0;
+            continue;
+        }
+        if (pol[i] == 'd') {
+            isMod = 1;
+            koef = 0;
+            continue;
+        }
+
+        if (isPositiveNumber || isNegativeNumber || isMod) {
+            if (pol[i] >= '0' && pol[i] <= '9') {
+                koef = koef * 10;
+                koef = koef + pol[i] - 48;
+            }
+            else if (koef == 0)
+                koef = 1;
+            if (isPositiveNumber) {
+                isPositiveNumber = 0;
+                koefs.push_back(koef);
+            }
+            else if (isNegativeNumber) {
+                isNegativeNumber = 0;
+                koefs.push_back(-1 * koef);
+            }
+            else if (isMod) {
+                isMod = 0;
+                mod = koef;
+            }
+        }
+    }
+
+    for (int i = koefs.size() - 1; i >= 0; --i) {
+        modKoefs.push_back(BigModInt(koefs[i], mod));
+    }
+
+    modPolynomial = modKoefs;
+
+}
+
 std::pair<ModPolynomial, ModPolynomial> ModPolynomial::divide(ModPolynomial& pol) {
     pol.removeZeros();
     this->removeZeros();
@@ -42,7 +102,7 @@ std::pair<ModPolynomial, ModPolynomial> ModPolynomial::divide(ModPolynomial& pol
 }
 
 
-ModPolynomial ModPolynomial::inversePolynomial(ModPolynomial& modulus, FiniteField num) {
+ModPolynomial ModPolynomial::inversePolynomial(ModPolynomial& modulus) {
     BigInt simpleOne(1);
     BigModInt one(simpleOne, this->modPolynomial[0].getModulus());
     BigModInt oneMinus(this->modPolynomial[0].getModulus() - simpleOne, this->modPolynomial[0].getModulus());
@@ -121,4 +181,43 @@ ModPolynomial ModPolynomial::operator-(const ModPolynomial& second)const {
     }
     result.removeZeros();
     return result;
+}
+
+std::string ModPolynomial::toString()
+{
+    this->removeZeros();
+    std::string resultString = "";
+    BigInt zero(0);
+    BigInt one(1);
+    bool isOut = false;
+    for (int i = this->modPolynomial.size() - 1; i >= 0; --i) {
+        if (modPolynomial[i].getNumber() != zero) {
+            if (isOut)
+                resultString += " + ";
+            isOut = true;
+            if (i == 0) {
+                resultString += modPolynomial[i].getNumber().GetString();
+                break;
+            }
+            if (modPolynomial[i].getNumber() != one) {
+                resultString += modPolynomial[i].getNumber().GetString();
+                resultString += '*';
+            }
+            resultString += 'x';
+            if (i > 1) {
+                char ii = i + '0';
+                resultString += '^';
+                resultString += ii;
+
+            }
+        }
+    }
+    return resultString;
+}
+
+std::ostream& operator<<(std::ostream& out, ModPolynomial& a)
+{
+    out << a.toString();
+    out << std::endl;
+    return out;
 }

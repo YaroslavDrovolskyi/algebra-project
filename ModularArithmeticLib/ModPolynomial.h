@@ -19,6 +19,8 @@ public:
         modPolynomial = pol;
     }
 
+    ModPolynomial(std::string pol);
+
     void setModPolynomial(std::vector<BigModInt> pol) {
         modPolynomial = pol;
     }
@@ -29,8 +31,12 @@ public:
 
     std::pair<ModPolynomial, ModPolynomial> divide(ModPolynomial& pol); // we get fraction and remainder as the return values
 
-    ModPolynomial inversePolynomial(ModPolynomial& modulus, FiniteField num);
+    ModPolynomial inversePolynomial(ModPolynomial& modulus);
 
     ModPolynomial operator*(const ModPolynomial& second);
     ModPolynomial operator-(const ModPolynomial& second)const;
+
+    std::string toString();
+
+    friend std::ostream& operator<< (std::ostream& out, ModPolynomial& a);
 };

@@ -21,7 +21,7 @@ extern "C++" {
 
 
         void RemoveBeginZeros();
-		bool IsCorrectNumber(std::string number);
+        bool IsCorrectNumber(std::string number);
 		friend int CompareAbs(const BigInt& a, const BigInt& b);
 		friend int Compare(const BigInt& a, const BigInt& b);
 		friend std::pair<BigInt, BigInt> Divide(BigInt& a, BigInt& b);
@@ -36,11 +36,14 @@ extern "C++" {
         MODULARARITHMETICLIB_EXPORT friend BigInt operator/(const BigInt& a, const BigInt& b);
         MODULARARITHMETICLIB_EXPORT friend BigInt operator%(const BigInt& a, const BigInt& b);
 
+        MODULARARITHMETICLIB_EXPORT friend BigInt operator/(const BigInt& a, int b); // we need it for calculating operator/(BigInt, BigInt)
+        MODULARARITHMETICLIB_EXPORT friend BigInt operator%(const BigInt& a, int b);
+
 
 	public:
         BigInt();
         BigInt(const BigInt& other);
-		BigInt(std::string number);
+        BigInt(const std::string& number);
 		BigInt(int a);
 
 		std::string GetString();
@@ -82,6 +85,8 @@ extern "C++" {
     MODULARARITHMETICLIB_EXPORT BigInt operator-(int a, const BigInt& b);
     MODULARARITHMETICLIB_EXPORT BigInt operator*(const BigInt& a, int b);
     MODULARARITHMETICLIB_EXPORT BigInt operator*(int a, const BigInt& b);
+
+
 
 
     MODULARARITHMETICLIB_EXPORT BigInt pow(BigInt basis, BigInt exponent);

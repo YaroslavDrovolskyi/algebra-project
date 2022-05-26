@@ -13,12 +13,14 @@ SOURCES += \
     BigInt.cpp \
     BigModInt.cpp \
     FiniteField.cpp \
+    ModPolynomial.cpp \
     Polynomial.cpp
 
 HEADERS += \
     BigInt.h \
     BigModInt.h \
     FiniteField.h \
+    ModPolynomial.h \
     ModularArithmeticLib_global.h \
     Polynomial.h \
     modulararithmeticlib.h

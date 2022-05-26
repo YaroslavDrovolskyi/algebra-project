@@ -8,8 +8,18 @@ BigModInt::BigModInt(const BigInt& number, const BigInt& modulus) : number(numbe
 
 	this->number = number % modulus;
 }
-
-
+void BigModInt::setModulus(const BigInt& modulus)
+{
+    assert(modulus > 1);
+    this->modulus = modulus;
+    this->number = number % modulus;
+}
+void BigModInt::setNumber(const BigInt &number)
+{
+            assert(number >= 0);
+            this->number = number;
+            this->number = number % modulus;
+}
 BigModInt operator+(const BigModInt& a, const BigModInt& b) {
 	assert(a.modulus == b.modulus);
 
@@ -50,3 +60,6 @@ BigModInt inverse(const BigModInt&a) {
 	return BigModInt(result_number,a.modulus);
 }
 
+bool operator==(const BigModInt& a, const BigModInt& b) {
+    return (a.modulus == b.modulus && a.number == b.number);
+}

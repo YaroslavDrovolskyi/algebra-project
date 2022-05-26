@@ -16,18 +16,17 @@ extern "C++" {
 	public:
 		BigModInt(const BigInt& number, const BigInt& modulus);
 
-
-
-
-		friend BigModInt operator+(const BigModInt& a, const BigModInt& b);
-		friend BigModInt operator-(const BigModInt& a, const BigModInt& b);
-		friend BigModInt operator*(const BigModInt& a, const BigModInt& b);
-		friend BigModInt operator/(const BigModInt& a, const BigModInt& b);
-		friend BigModInt inverse(const BigModInt&a);
+        MODULARARITHMETICLIB_EXPORT friend BigModInt operator+(const BigModInt& a, const BigModInt& b);
+        MODULARARITHMETICLIB_EXPORT friend BigModInt operator-(const BigModInt& a, const BigModInt& b);
+        MODULARARITHMETICLIB_EXPORT friend BigModInt operator*(const BigModInt& a, const BigModInt& b);
+        MODULARARITHMETICLIB_EXPORT friend BigModInt operator/(const BigModInt& a, const BigModInt& b);
+        MODULARARITHMETICLIB_EXPORT friend BigModInt inverse(const BigModInt&a);
 	};
 }
 
-
+extern "C++" BigModInt operator+(const BigModInt& a, const BigModInt& b);
+extern "C++" BigModInt operator*(const BigModInt& a, const BigModInt& b);
+extern "C++" BigModInt operator/(const BigModInt& a, const BigModInt& b);
 
 
 

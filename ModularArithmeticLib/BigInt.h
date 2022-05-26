@@ -79,50 +79,50 @@ extern "C++" {
 
 		BigInt& operator=(const BigInt& other);
 		BigInt& operator=(int other);
-		friend std::ostream& operator<< (std::ostream& out, const BigInt& a);
-		friend BigInt operator+(const BigInt& a, const BigInt& b);
-		friend BigInt operator-(const BigInt& a, const BigInt& b);
-		friend BigInt operator*(const BigInt& a, const BigInt& b);
-		friend BigInt operator/(const BigInt& a, int b);
-		friend BigInt operator%(const BigInt& a, int b);
-		friend BigInt operator/(const BigInt& a, const BigInt& b);
-		friend BigInt operator%(const BigInt& a, const BigInt& b);
+        MODULARARITHMETICLIB_EXPORT friend std::ostream& operator<< (std::ostream& out, const BigInt& a);
+        MODULARARITHMETICLIB_EXPORT friend BigInt operator+(const BigInt& a, const BigInt& b);
+        MODULARARITHMETICLIB_EXPORT friend BigInt operator-(const BigInt& a, const BigInt& b);
+        MODULARARITHMETICLIB_EXPORT friend BigInt operator*(const BigInt& a, const BigInt& b);
+        MODULARARITHMETICLIB_EXPORT friend BigInt operator/(const BigInt& a, int b);
+        MODULARARITHMETICLIB_EXPORT friend BigInt operator%(const BigInt& a, int b);
+        MODULARARITHMETICLIB_EXPORT friend BigInt operator/(const BigInt& a, const BigInt& b);
+        MODULARARITHMETICLIB_EXPORT friend BigInt operator%(const BigInt& a, const BigInt& b);
 
 	};
 
 
-	bool operator>(const BigInt& a, const BigInt& b);
-	bool operator==(const BigInt& a, const BigInt& b);
-	bool operator!=(const BigInt& a, const BigInt& b);
-	bool operator<(const BigInt& a, const BigInt& b);
-	bool operator>=(const BigInt& a, const BigInt& b);
-	bool operator<=(const BigInt& a, const BigInt& b);
-	bool operator>(const BigInt& a, int b);
-	bool operator>(int a, const BigInt& b);
-	bool operator==(const BigInt& a, int b);
-	bool operator==(int a, const BigInt& b);
-	bool operator!=(const BigInt& a, int b);
-	bool operator!=(int a, const BigInt& b);
-	bool operator<(const BigInt& a, int b);
-	bool operator<(int a, const BigInt& b);
-	bool operator>=(const BigInt& a, int b);
-	bool operator>=(int a, const BigInt& b);
-	bool operator<=(const BigInt& a, int b);
-	bool operator<=(int a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT bool operator>(const BigInt& a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT bool operator==(const BigInt& a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT bool operator!=(const BigInt& a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT bool operator<(const BigInt& a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT bool operator>=(const BigInt& a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT bool operator<=(const BigInt& a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT bool operator>(const BigInt& a, int b);
+    MODULARARITHMETICLIB_EXPORT bool operator>(int a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT bool operator==(const BigInt& a, int b);
+    MODULARARITHMETICLIB_EXPORT bool operator==(int a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT bool operator!=(const BigInt& a, int b);
+    MODULARARITHMETICLIB_EXPORT bool operator!=(int a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT bool operator<(const BigInt& a, int b);
+    MODULARARITHMETICLIB_EXPORT bool operator<(int a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT bool operator>=(const BigInt& a, int b);
+    MODULARARITHMETICLIB_EXPORT bool operator>=(int a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT bool operator<=(const BigInt& a, int b);
+    MODULARARITHMETICLIB_EXPORT bool operator<=(int a, const BigInt& b);
 
 
 
-	BigInt operator+(const BigInt& a, int b);
-	BigInt operator+(int a, const BigInt& b);
-	BigInt operator-(const BigInt& a, int b);
-	BigInt operator-(int a, const BigInt& b);
-	BigInt operator*(const BigInt& a, int b);
-	BigInt operator*(int a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT BigInt operator+(const BigInt& a, int b);
+    MODULARARITHMETICLIB_EXPORT BigInt operator+(int a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT BigInt operator-(const BigInt& a, int b);
+    MODULARARITHMETICLIB_EXPORT BigInt operator-(int a, const BigInt& b);
+    MODULARARITHMETICLIB_EXPORT BigInt operator*(const BigInt& a, int b);
+    MODULARARITHMETICLIB_EXPORT BigInt operator*(int a, const BigInt& b);
 
 
-	BigInt pow(BigInt basis, BigInt exponent);
+    MODULARARITHMETICLIB_EXPORT BigInt pow(BigInt basis, BigInt exponent);
 
-	struct  NumberWithPow {
+    struct MODULARARITHMETICLIB_EXPORT NumberWithPow {
 		BigInt number;
 		BigInt exponent;
 

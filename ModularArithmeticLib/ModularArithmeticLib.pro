@@ -22,8 +22,7 @@ HEADERS += \
     FiniteField.h \
     ModPolynomial.h \
     ModularArithmeticLib_global.h \
-    Polynomial.h \
-    modulararithmeticlib.h
+    Polynomial.h
 
 # Default rules for deployment.
 unix {

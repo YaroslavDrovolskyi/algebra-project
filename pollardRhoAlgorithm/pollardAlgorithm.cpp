@@ -67,7 +67,7 @@ void factorize(int n)   //функц для розкладу числа на м�
     if(n == 1)
         return;
 
-    if(isPrime[n])      //якщо n ціле, зберегти
+    if(isPrime[n])     
     {
         factors[total++] = n;
         return;

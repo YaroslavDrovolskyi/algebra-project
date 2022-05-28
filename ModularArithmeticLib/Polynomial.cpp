@@ -7,12 +7,31 @@ Polynomial::Polynomial(std::string pol)
         throw std::invalid_argument("incorrect input");
     std::string polForExp = pol;
     std::vector<number> koefs;
-    number koef;
+    number koef, prevXor, curXor;
     bool isPositiveNumber = 0;
     bool isNegativeNumber = 0;
+    bool isXor = 0;
+    bool isFirstXor = 0;
+
+    pol.erase(remove(pol.begin(), pol.end(), ' '), pol.end());
+    if (pol[pol.size() - 1] >= '0' && pol[pol.size() - 1] <= '9') {
+        pol += "x^0";
+        if (!isCorrect(pol)) {
+            pol.erase(pol.size() - 3, pol.size());
+        }
+    }
+    for (int i = 0; i < pol.size(); ++i) {
+        if (pol[i] == 'x' && pol[i + 1] != '^') {
+            pol.insert(i + 1, "^1");
+            break;
+        }
+        else if (pol[i] == 'x' && i == pol.size() - 1) {
+            pol += "^1";
+        }
+    }
+
     if (pol[0] != '-')
         pol = '+' + pol;
-
     for (int i = 0; i < pol.size(); ++i) {
         if (pol[i] == ' ')
             continue;
@@ -26,8 +45,13 @@ Polynomial::Polynomial(std::string pol)
             koef = 0;
             continue;
         }
+        else if (pol[i] == '^') {
+            isXor = 1;
+            koef = 0;
+            continue;
+        }
 
-        if (isPositiveNumber || isNegativeNumber) {
+        if (isPositiveNumber || isNegativeNumber || isXor) {
             if (pol[i] >= '0' && pol[i] <= '9') {
                 koef = koef * 10;
                 koef = koef + pol[i] - 48;
@@ -44,6 +68,26 @@ Polynomial::Polynomial(std::string pol)
                     koef = 1;
                 koefs.push_back(-1 * koef);
             }
+            else if ((i == pol.size() - 1 || pol[i + 1] < '0' || pol[i + 1] > '9') && isXor) {
+                isXor = 0;
+                if (!isFirstXor) {
+                    isFirstXor = 1;
+                    prevXor = koef;
+                }
+                else {
+                    if (prevXor - koef > 1) {
+                        for (int i = 0; i < prevXor - koef - 1; ++i) {
+                            koefs.insert(koefs.end() - 1, 0);
+                        }
+                    }
+                    prevXor = koef;
+                }
+            }
+        }
+    }
+    if (prevXor != 0) {
+        for (int i = 0; i <  prevXor; ++i) {
+            koefs.push_back(0);
         }
     }
     std::reverse(koefs.begin(), koefs.end());
@@ -156,7 +200,6 @@ bool Polynomial::isCorrect(std::string input)
                 index = tmp;
                 tmp = 0;
                 if (str[0] == '+' || str[0] == '-') isKoef = true;
-                else if (str[0] == 'x') isX = true;
                 else return false;
             }
 

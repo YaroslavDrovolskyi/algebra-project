@@ -87,7 +87,6 @@ bool ModPolynomial::isCorrect(std::string input)
                 index = tmp;
                 tmp = 0;
                 if (str[0] == '+' || str[0] == '-') isKoef = true;
-                else if (str[0] == 'x') isX = true;
                 else return false;
             }
 

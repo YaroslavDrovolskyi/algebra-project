@@ -1,10 +1,15 @@
 #include "BigModInt.h"
-
+#include <stdexcept>
 
 BigModInt::BigModInt(const BigInt& number, const BigInt& modulus) : number(number), modulus(modulus)
 {
-	assert(modulus > 1);
-	assert(number >= 0);
+
+    if (modulus <= 1){
+        throw std::invalid_argument("Modulus must be > 1");
+    }
+    if (number < 0){
+        throw std::invalid_argument("Number must be >= 0");
+    }
 
 	this->number = number % modulus;
 }
@@ -54,7 +59,10 @@ BigModInt operator/(const BigModInt& a, const BigModInt& b) {
 
 BigModInt inverse(const BigModInt&a) {
     BigInt x, y;
-	assert(gcdExtended(a.number, a.modulus, &x, &y) == 1 && "Inverse doesn't exist");
+    if (gcdExtended(a.number, a.modulus, &x, &y) != 1){
+        throw std::invalid_argument("Inverse doesn't exist");
+    }
+
 	BigInt result_number;
 	while(x<0){
 		x = x + a.modulus;

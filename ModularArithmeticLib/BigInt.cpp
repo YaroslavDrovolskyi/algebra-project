@@ -1,10 +1,20 @@
 #include "BigInt.h"
-//#include <iostream>
 #include <algorithm>
+#include <stdexcept>
 
 
-BigInt::BigInt(std::string number) {
-	assert(IsCorrectNumber(number));
+BigInt::BigInt() : is_negative_(false)
+{
+
+}
+
+
+BigInt::BigInt(const std::string& numb) {
+    std::string number(numb);
+    if (!IsCorrectNumber(number)){
+        throw std::invalid_argument("Enter correct number");
+    }
+//	assert(IsCorrectNumber(number));
 
 	if (number[0] == '-') {
 		this->is_negative_ = true;
@@ -51,6 +61,20 @@ BigInt::BigInt(int a) {
 		this->numbers_.push_back(a % base);
 		a /= base;
 	}
+}
+
+
+BigInt::BigInt(const BigInt& other) { // copy constructor
+    this->is_negative_ = other.is_negative_;
+    for (std::size_t i = 0; i < other.numbers_.size(); i++) {
+        this->numbers_.push_back(other.numbers_[i]);
+    }
+}
+
+void BigInt::RemoveBeginZeros() {
+    while (this->numbers_.size() > 1 && this->numbers_[this->numbers_.size() - 1] == 0) {
+        this->numbers_.pop_back();
+    }
 }
 
 BigInt& BigInt::operator=(const BigInt& other) {
@@ -245,40 +269,40 @@ BigInt operator*(const BigInt& a, const BigInt& b) {
 
 	return result;
 }
-/*
+
+
 BigInt operator/(const BigInt& a, int b) {
-	assert(b != 0 && "Division by zero is impossible");
-	BigInt fraction;
-	bool b_negative = false;
-	if (b < 0) {
-		b_negative = true;
-		b = abs(b); // to avoid sign conflict
-	}
-	int carry = 0;
-	for (int i = a.numbers_.size() - 1; i >= 0; i--) {
-		long long current = a.numbers_[i] + carry * 1ll * base;
-		fraction.numbers_.push_back(current / b);
-		carry = current % b;
-	}
-	std::reverse(fraction.numbers_.begin(), fraction.numbers_.end());
-	fraction.RemoveBeginZeros();
+    assert(b != 0 && "Division by zero is impossible");
+    BigInt fraction;
+    bool b_negative = false;
+    if (b < 0) {
+        b_negative = true;
+        b = abs(b); // to avoid sign conflict
+    }
+    int carry = 0;
+    for (int i = a.numbers_.size() - 1; i >= 0; i--) {
+        long long current = a.numbers_[i] + carry * 1ll * base;
+        fraction.numbers_.push_back(current / b);
+        carry = current % b;
+    }
+    std::reverse(fraction.numbers_.begin(), fraction.numbers_.end());
+    fraction.RemoveBeginZeros();
 
 
-	if (fraction.numbers_.size() != 1 || fraction.numbers_[0] != 0) { // if number isn't 0
-		if (a.is_negative_ && !b_negative || !a.is_negative_ && b_negative) {
-			fraction.is_negative_ = true;
-		}
-	}
-	return fraction;
+    if (fraction.numbers_.size() != 1 || fraction.numbers_[0] != 0) { // if number isn't 0
+        if (a.is_negative_ && !b_negative || !a.is_negative_ && b_negative) {
+            fraction.is_negative_ = true;
+        }
+    }
+    return fraction;
 }
 
 BigInt operator%(const BigInt& a, int b) {
-	assert(b != 0 && "Division by zero is impossible");
-	assert(!a.is_negative_ && b > 0 && "Impossible to get carry from ");
-	BigInt b_big(std::to_string(b));
-	return a - b_big * (a / b);
+    assert(b != 0 && "Division by zero is impossible");
+    assert(!a.is_negative_ && b > 0 && "Impossible to get carry from ");
+    BigInt b_big(std::to_string(b));
+    return a - b_big * (a / b);
 }
-*/
 
 bool operator>(const BigInt& a, const BigInt& b) {
 	return Compare(a, b) == -1;
@@ -372,6 +396,28 @@ bool operator<=(int a, const BigInt& b) {
 	return Compare(BigInt(a), b) >= 0; // 0, 1 are possible
 }
 
+BigInt& BigInt::operator++() {
+    *this = *this + 1;
+    return *this;
+}
+
+BigInt& BigInt::operator--() {
+    *this = *this - 1;
+    return *this;
+}
+
+BigInt BigInt::operator++(int) {
+    BigInt copy(*this);
+    ++(*this);
+    return copy;
+}
+
+BigInt BigInt::operator--(int) {
+    BigInt copy(*this);
+    --(*this);
+    return copy;
+}
+
 
 std::ostream& operator<< (std::ostream& out, const BigInt& a) {
 	if (a.is_negative_ == true) {
@@ -427,7 +473,7 @@ BigInt operator/(const BigInt& a, const BigInt& b) {
 
 	BigInt fraction(0);
 	BigInt left(0);
-	BigInt right = a; // call copy constructor
+    BigInt right = a;
 
 	while (left <= right) {
 		BigInt middle = (left + right) / 2;

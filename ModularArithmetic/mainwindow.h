@@ -21,9 +21,25 @@ public:
 private slots:
     void on_calculate_btn_1_clicked();
 
+    void on_calculate_btn_2_clicked();
+
+    void on_calculate_btn_3_clicked();
+
+    void on_calculate_btn_4_clicked();
+
+    void on_calculate_btn_5_clicked();
+
+    void on_calculate_btn_6_clicked();
+
+    void on_calculate_btn_7_clicked();
+
+    void on_calculate_btn_8_clicked();
+
 private:
     Ui::MainWindow *ui;
 
-    Calculator calculator;
+    NumberCalculator numb_calc;
+    PolynomialRingCalculator pol_ring_calc;
+    PolynomialFieldCalculator pol_field_calc;
 };
 #endif // MAINWINDOW_H

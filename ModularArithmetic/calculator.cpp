@@ -124,8 +124,7 @@ QString PolynomialRingCalculator::calcDerivative(const Polynomial& a){
 
 QString PolynomialRingCalculator::calcValue(Polynomial a, BigModInt point){
 
-    BigModInt result(point);
-    //    BigModInt result = a.valueAtPoint(point); // //////////////////////////////////////// add implenention for BigModInt (not double)
+    BigModInt result = a.valueAtPoint(point);
     return QString(result.getNumber().GetString().c_str());
 
 }
@@ -156,12 +155,12 @@ PolynomialFieldCalculator::PolynomialFieldCalculator() :
 QString PolynomialFieldCalculator::calc(std::size_t op_index, Polynomial irreducible_pol, ModPolynomial a){
     switch(op_index){
         case 0:{
-            return QString("true"); // ////////////////////////// need to add implmentation of chicnking for reducibility
+            return QString("It will be checking for resucibility"); // ////////////////////////// need to add implmentation of chicnking for reducibility
             break;
         }
         case 1:{
-    //        Polynomial result = a.inversePolynomial(irreducible_pol);
-            return QString("Reverted polynomial"); // ////////////////////////// need to add implmentation of chicnking for reducibility
+            ModPolynomial result = a.inversePolynomial();
+            return QString(result.getValue().toString().c_str());
             break;
         }
         default:{

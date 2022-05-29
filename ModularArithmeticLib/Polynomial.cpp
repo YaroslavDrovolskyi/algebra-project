@@ -356,7 +356,7 @@ Polynomial Polynomial::operator-(const Polynomial& second)const {
 	}
 	if(second.polynomial.size()>polynomial.size()){
 		for(size_t i = std::min(polynomial.size(), second.polynomial.size()); i < std::max(polynomial.size(), second.polynomial.size());++i){
-			result.polynomial[i] = - second.polynomial[i];
+            result.polynomial[i] = BigModInt(second.polynomial[i].getModulus() - second.polynomial[i].getNumber(), second.polynomial[i].getModulus());
 		}
 	}
 	result.removeZeros();

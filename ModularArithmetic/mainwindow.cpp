@@ -78,8 +78,8 @@ void MainWindow::on_calculate_btn_3_clicked()
 
     try{
         BigInt modulus(modulus_str);
-        Polynomial left_pol(left_pol_str);
-        Polynomial right_pol(right_pol_str);
+        Polynomial left_pol(left_pol_str, modulus);
+        Polynomial right_pol(right_pol_str, modulus);
 
         QString result = pol_ring_calc.calc(op_index, left_pol, right_pol);
 
@@ -98,7 +98,7 @@ void MainWindow::on_calculate_btn_4_clicked()
 
     try{
         BigInt modulus(modulus_str);
-        Polynomial pol(pol_str);
+        Polynomial pol(pol_str, modulus);
 
         QString result = pol_ring_calc.calcDerivative(pol);
 
@@ -117,7 +117,8 @@ void MainWindow::on_calculate_btn_5_clicked()
     std::string point_str = ui->number4_input->text().toStdString();
 
     try{
-        Polynomial pol(pol_str);
+        BigInt modulus(modulus_str);
+        Polynomial pol(pol_str, modulus);
         BigModInt point(point_str, modulus_str);
 
         QString result = pol_ring_calc.calcValue(pol, point);
@@ -138,10 +139,14 @@ void MainWindow::on_calculate_btn_6_clicked()
 
     try{
         BigInt modulus(modulus_str);
-        Polynomial left_pol(left_pol_str);
-        Polynomial right_pol(right_pol_str);
+        Polynomial left_pol(left_pol_str, modulus);
+        Polynomial right_pol(right_pol_str, modulus);
 
         std::pair<QString, QString> result = pol_ring_calc.calcFractionRemainer(left_pol, right_pol);
+
+        if (result.second==""){
+            result.second="0";
+        }
 
         ui->result_6->setText(result.first); // print fraction
         ui->result_7->setText(result.second); // print remainder
@@ -181,10 +186,10 @@ void MainWindow::on_calculate_btn_8_clicked()
 
     try{
         BigInt modulus(modulus_str);
-        Polynomial irreducible_pol(irreducible_pol_str);
-        ModPolynomial pol(pol_str);
+        Polynomial irreducible_pol(irreducible_pol_str, modulus);
+        Polynomial value_pol(pol_str, modulus);
 
-
+        ModPolynomial pol(value_pol, irreducible_pol);
 
         QString result = pol_field_calc.calc(op_index, irreducible_pol, pol);
 

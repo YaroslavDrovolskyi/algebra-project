@@ -42,7 +42,7 @@ ModPolynomial ModPolynomial::inversePolynomial() {
         a = b;
         b = pair.second;
         ++i;
-        if (pair.second.getPolynomial().size() == 1 && pair.second.getPolynomial()[0] == one)
+        if (pair.second.getPolynomial().size() == 1)
             break;
     } while (true);
 

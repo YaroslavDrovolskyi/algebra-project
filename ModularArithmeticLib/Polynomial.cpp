@@ -291,6 +291,7 @@ std::pair<Polynomial, Polynomial> Polynomial::divide(Polynomial& pol) {
     return std::make_pair(Polynomial(fraction, this->getFieldModulus()), Polynomial(remainder, this->getFieldModulus()).removeZeros());
 }
 
+
 Polynomial Polynomial::gcd(Polynomial& pol) {
     pol.removeZeros();
     this->removeZeros();
@@ -347,20 +348,41 @@ Polynomial Polynomial::operator+(const Polynomial& second)const {
     return result;
 }
 
+//Polynomial Polynomial::operator-(const Polynomial& second)const {
+//	Polynomial result;
+//    result.polynomial.resize(std::max(second.polynomial.size(), polynomial.size()));
+//    (polynomial.size() < second.polynomial.size()) ? result.setPolynomial(second.polynomial) : result.setPolynomial(polynomial);
+//    for (size_t i = 0; i != std::min(polynomial.size(), second.polynomial.size()); ++i) {
+//		result.polynomial[i] = polynomial[i] - second.polynomial[i];
+//	}
+//	if(second.polynomial.size()>polynomial.size()){
+//		for(size_t i = std::min(polynomial.size(), second.polynomial.size()); i < std::max(polynomial.size(), second.polynomial.size());++i){
+//            result.polynomial[i] = - second.polynomial[i];
+//		}
+//	}
+//	result.removeZeros();
+//	return result;
+//}
+
 Polynomial Polynomial::operator-(const Polynomial& second)const {
-	Polynomial result;
+    BigInt simpleOne(1);
+    BigModInt oneMinus(getFieldModulus() - simpleOne, getFieldModulus());
+    Polynomial onePolMinus({ oneMinus.getNumber() }, oneMinus.getModulus());
+    Polynomial result, tmp;
     result.polynomial.resize(std::max(second.polynomial.size(), polynomial.size()));
-    (polynomial.size() < second.polynomial.size()) ? result.setPolynomial(second.polynomial) : result.setPolynomial(polynomial);
-    for (size_t i = 0; i != std::min(polynomial.size(), second.polynomial.size()); ++i) {
-		result.polynomial[i] = polynomial[i] - second.polynomial[i];
-	}
-	if(second.polynomial.size()>polynomial.size()){
-		for(size_t i = std::min(polynomial.size(), second.polynomial.size()); i < std::max(polynomial.size(), second.polynomial.size());++i){
-			result.polynomial[i] = - second.polynomial[i];
-		}
-	}
-	result.removeZeros();
-	return result;
+    if (polynomial.size() < second.polynomial.size()) {
+        result.setPolynomial((onePolMinus * second.polynomial).getPolynomial());
+        tmp = *this;
+    }
+    else {
+        result.setPolynomial(polynomial);
+        tmp = second;
+    }
+    for (size_t i = 0; i < std::min(polynomial.size(), second.getPolynomial().size()); ++i) {
+        result.polynomial[i] = result.polynomial[i] - tmp.getPolynomial()[i];
+    }
+    result.removeZeros();
+    return result;
 }
 
 Polynomial Polynomial::operator*(const Polynomial& second)const {

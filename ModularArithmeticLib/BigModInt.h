@@ -17,13 +17,13 @@ extern "C++" {
         BigModInt() { number = BigInt(0); modulus = BigInt(2); }
 		BigModInt(const BigInt& number, const BigInt& modulus);
 
-        BigInt getNumber() {
+        BigInt getNumber() const{
             return number;
         }
 
         void setNumber(const BigInt& number);
 
-        BigInt getModulus() {
+        BigInt getModulus() const{
             return modulus;
         }
 

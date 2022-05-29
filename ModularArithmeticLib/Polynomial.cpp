@@ -1,13 +1,34 @@
 #include "Polynomial.h"
 #include <sstream>
 
-Polynomial::Polynomial(std::string pol)
+Polynomial::Polynomial(std::vector<BigInt> pol, BigInt modulus)
+{
+    this->modulus = modulus;
+    polynomial.resize(pol.size());
+    for (int i = 0; i < polynomial.size(); ++i) {
+        this->polynomial[i] = BigModInt(pol[i], modulus);
+    }
+}
+
+Polynomial::Polynomial(std::vector<BigModInt> pol, BigInt modulus)
+{
+    this->modulus = modulus;
+    polynomial.resize(pol.size());
+    for (int i = 0; i < polynomial.size(); ++i) {
+        this->polynomial[i] = BigModInt(pol[i].getNumber(), modulus);
+    }
+}
+
+
+Polynomial::Polynomial(std::string pol, BigInt modulus)
 {
     if(!this->isCorrect(pol))
         throw std::invalid_argument("incorrect input");
+    this->modulus = modulus;
     std::string polForExp = pol;
-    std::vector<number> koefs;
-    number koef, prevXor, curXor;
+    std::vector<BigInt> koefs;
+    std::vector<BigModInt> modKoefs;
+    BigInt koef, prevXor, curXor;
     bool isPositiveNumber = 0;
     bool isNegativeNumber = 0;
     bool isXor = 0;
@@ -90,17 +111,23 @@ Polynomial::Polynomial(std::string pol)
             koefs.push_back(0);
         }
     }
-    std::reverse(koefs.begin(), koefs.end());
-
-    polynomial = koefs;
+    for (int i = koefs.size() - 1; i >= 0; --i) {
+        modKoefs.push_back(BigModInt(koefs[i], modulus));
+    }
+    polynomial = modKoefs;
 }
 
-number Polynomial::valueAtPoint(number point)
+BigModInt Polynomial::valueAtPoint(BigModInt point)
 {
     this->removeZeros();
-    number res = 0;
+    BigModInt res(BigInt(0),point.getModulus());
+    if (polynomial.empty())
+        return res;
+    if (point.getModulus() != getFieldModulus())
+        throw std::invalid_argument("incorrect input");
+
     for (int i = 0; i < polynomial.size(); ++i) {
-        res += (pow(point, i) * polynomial[i]);
+        res = res + (pow(point, i) * polynomial[i]);
     }
     return res;
 }
@@ -108,9 +135,9 @@ number Polynomial::valueAtPoint(number point)
 Polynomial Polynomial::differentiation()
 {
     this->removeZeros();
-    std::vector<number> res = std::vector<number>(polynomial.size() - 1);
+    std::vector<BigModInt> res = std::vector<BigModInt>(polynomial.size() - 1);
     for (int i = 0; i < res.size(); ++i) {
-        res[i] = polynomial[i + 1] * (i + 1);
+        res[i] = polynomial[i + 1] * BigModInt(BigInt(i + 1), getFieldModulus() );
     }
     return Polynomial(res);
 }
@@ -118,18 +145,26 @@ Polynomial Polynomial::differentiation()
 Polynomial Polynomial::removeZeros() {
     if (this->polynomial.empty())
         return this->polynomial;
-    while (this->polynomial[this->polynomial.size() - 1] == 0 && this->polynomial.size() > 1) {
+    BigModInt zero(0, this->getFieldModulus());
+    while (this->polynomial[this->polynomial.size() - 1] == zero && this->polynomial.size() > 1) {
         this->polynomial.pop_back();
     }
     return this->polynomial;
 }
-
-std::string Polynomial::numberToSting(number dbl)
+std::string Polynomial::numberToSting(BigModInt num)
 {
-    std::ostringstream strs;
-    strs << dbl;
-    std::string str = strs.str();
-    return str;
+    return num.getNumber().GetString();
+}
+
+BigModInt Polynomial::pow(BigModInt value, int power)
+{
+    if(power<0)
+        throw std::invalid_argument("power must be positive");
+    BigModInt res(BigInt(1),value.getModulus());
+    for (int i = 0; i < power; ++i) {
+        res = res * value;
+    }
+    return res;
 }
 
 bool Polynomial::isCorrect(std::string input)
@@ -212,40 +247,63 @@ bool Polynomial::isCorrect(std::string input)
     return (isKoef || isX || isInd);
 }
 
+Polynomial::Polynomial(std::vector<BigModInt> pol)
+{
+    polynomial = pol;
+    if (!pol.empty())
+        this->modulus = pol[0].getModulus();
+}
+
 std::pair<Polynomial, Polynomial> Polynomial::divide(Polynomial& pol) {
     pol.removeZeros();
     this->removeZeros();
-
+    if(this->polynomial.empty() || pol.polynomial.empty())
+        throw std::invalid_argument("polynom can't be empty");
+    if(this->getFieldModulus() != pol.getFieldModulus())
+        throw std::invalid_argument("Finite field must be same");
     if (pol.getPolynomial().size() > this->polynomial.size()) {
-        return std::make_pair(Polynomial(), this->polynomial);
+        return std::make_pair(Polynomial(), Polynomial(this->polynomial));
     }
 
     long long fractionSize = this->polynomial.size() - 1 - (pol.getPolynomial().size() - 1) + 1;
     long long polSize = pol.getPolynomial().size();
 
-    number currentIndex;
-    std::vector<number> fraction(fractionSize);
-    std::vector<number> remainder = this->polynomial;
+    int currentIndex;
+    std::vector<BigModInt> fraction(fractionSize);
+    std::vector<BigModInt> remainder = this->polynomial;
+
+    BigModInt zero(BigInt(0), this->getFieldModulus());
 
     for (int i = 0; i < fractionSize; ++i) {
         currentIndex = fractionSize - 1 - i;
-        if (remainder[remainder.size() - 1 - i] == 0) {
+        if (remainder[remainder.size() - 1 - i] == zero) {
             continue;
         }
         else {
             fraction[currentIndex] = remainder[remainder.size() - 1 - i] / pol.getPolynomial()[polSize - 1];
         }
         for (int j = 0; j < polSize; ++j) {
-            remainder[this->polynomial.size() - 1 - j - i] -= pol.getPolynomial()[polSize - 1 - j] * fraction[currentIndex];
+            remainder[this->polynomial.size() - 1 - j - i] = remainder[this->polynomial.size() - 1 - j - i] -
+                pol.getPolynomial()[polSize - 1 - j] * fraction[currentIndex];
         }
     }
 
-    return std::make_pair(Polynomial(fraction), Polynomial(remainder).removeZeros());
+    return std::make_pair(Polynomial(fraction, this->getFieldModulus()), Polynomial(remainder, this->getFieldModulus()).removeZeros());
 }
 
 Polynomial Polynomial::gcd(Polynomial& pol) {
+    pol.removeZeros();
+    this->removeZeros();
+    if (this->polynomial.empty() || pol.polynomial.empty())
+        throw std::invalid_argument("polynom can't be empty");
+    if (this->getFieldModulus() != pol.getFieldModulus())
+        throw std::invalid_argument("Finite field must be same");
     Polynomial pol1;
     Polynomial pol2;
+
+    BigModInt zero(BigInt(0), this->getFieldModulus());
+    BigModInt one(BigInt(1), this->getFieldModulus());
+
     if (pol.getPolynomial().size() > this->polynomial.size()) {
         pol1 = pol;
         pol2 = *this;
@@ -255,7 +313,7 @@ Polynomial Polynomial::gcd(Polynomial& pol) {
         pol2 = pol;
     }
     else {
-        if (abs(pol.getPolynomial()[pol.getPolynomial().size() - 1]) >= abs(this->polynomial[this->polynomial.size() - 1])) {
+        if ((pol.getPolynomial()[pol.getPolynomial().size() - 1]).getNumber() >= (this->polynomial[this->polynomial.size() - 1]).getNumber()) {
             pol1 = pol;
             pol2 = *this;
         }
@@ -265,12 +323,12 @@ Polynomial Polynomial::gcd(Polynomial& pol) {
         }
     }
     if (pol2.getPolynomial().size() == 1) {
-        std::vector<number> tmp;
-        tmp.push_back(1);
+        std::vector<BigModInt> tmp;
+        tmp.push_back(one);
         return Polynomial(tmp);
     }
     std::pair<Polynomial, Polynomial> tmp = pol1.divide(pol2);
-    if (tmp.second.getPolynomial()[tmp.second.getPolynomial().size() - 1] == 0) {
+    if (tmp.second.getPolynomial()[tmp.second.getPolynomial().size() - 1] == zero) {
         return pol2;
     }
     else {
@@ -301,35 +359,48 @@ Polynomial Polynomial::operator-(const Polynomial& second)const {
 }
 
 Polynomial Polynomial::operator*(const Polynomial& second)const {
-    Polynomial result;
-    result.polynomial.resize(polynomial.size() + second.polynomial.size());
+    BigInt simpleZero(0);
+    BigInt mod = this->getFieldModulus();
+    BigModInt zero(simpleZero, mod);
+    std::vector<BigModInt> pol(polynomial.size() + second.polynomial.size(), zero);
+    Polynomial result(pol);
+    //polynomial result;
+    //result.polynomial.resize(polynomial.size() + second.polynomial.size());
     for (size_t i = 0; i != polynomial.size(); ++i) {
         for (size_t j = 0; j != second.polynomial.size(); ++j) {
-            result.polynomial[i + j] += polynomial[i] * second.polynomial[j];
+            result.polynomial[i + j] = result.polynomial[i + j] + polynomial[i] * second.polynomial[j];
         }
     }
     result.removeZeros();
     return result;
 }
 
-std::string Polynomial::toString()
+Polynomial Polynomial::operator=(const Polynomial& second)
 {
-    this->removeZeros();
+    if (this == &second)
+        return *this;
+    this->polynomial = second.getPolynomial();
+    this->modulus = second.getFieldModulus();
+
+    return *this;
+}
+std::string Polynomial::toString()const
+{
     std::string resultString = "";
-    number zero(0);
-    number one(1);
+    BigInt zero(0);
+    BigInt one(1);
     bool isOut = false;
     for (int i = this->polynomial.size() - 1; i >= 0; --i) {
-        if (polynomial[i] != 0) {
+        if (polynomial[i].getNumber() != zero) {
             if (isOut)
                 resultString += " + ";
             isOut = true;
             if (i == 0) {
-                resultString += this->numberToSting(polynomial[i]);
+                resultString += polynomial[i].getNumber().GetString();
                 break;
             }
-            if (polynomial[i] != 1) {
-                resultString += this->numberToSting(polynomial[i]);
+            if (polynomial[i].getNumber() != one) {
+                resultString += polynomial[i].getNumber().GetString();
                 resultString += '*';
             }
             resultString += 'x';
@@ -344,7 +415,7 @@ std::string Polynomial::toString()
     return resultString;
 }
 
-std::ostream& operator<<(std::ostream& out, Polynomial& a)
+std::ostream& operator<<(std::ostream& out, const Polynomial& a)
 {
     out << a.toString();
     out << std::endl;

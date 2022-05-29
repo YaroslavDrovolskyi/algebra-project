@@ -95,43 +95,83 @@ void ModArithmeticTest::test_bigmodint_div()
 
 void ModArithmeticTest::test_polynomial_plus()
 {
-    std::vector<number> vec1 { 5, 4, 0, 3, 2, 5};
-    std::vector<number> vec2 { 4, 0, 9, 8, 25};
-    std::vector<number> vecresult {9, 4, 9, 11, 27, 5};
-    Polynomial poly1(vec1);
-    Polynomial poly2(vec2);
-    std::vector<number> res = (poly1 + poly2).getPolynomial();
-    QCOMPARE(res,vecresult);
+    std::vector<BigInt> pol = {5,8,3,7,2};
+    Polynomial poly(pol,7);
+
+    std::vector<BigInt> pol2 = {2,2,3,1,7};
+    Polynomial poly2(pol2,7);
+
+    Polynomial result = poly+poly2;
+    std::vector<BigModInt> res = {{0,7},{3,7},{6,7},{1,7},{2,7}};
+    QVERIFY(result.getPolynomial()==res);
+
+    pol = {5,18,3,7,9};
+    poly = {pol,7};
+
+    pol2 = {2,9,3,1};
+    poly2 = {pol2,7};
+
+    result = poly+poly2;
+    res = {{0,7},{6,7},{6,7},{1,7},{2,7}};
+    QVERIFY(result.getPolynomial()==res);
+
+
+    pol = {2,9,3,1};
+    poly = {pol,7};
+
+    pol2 = {5,18,3,7,9};
+    poly2 = {pol2,7};
+
+    result = poly+poly2;
+    res = {{0,7},{6,7},{6,7},{1,7},{2,7}};
+    QVERIFY(result.getPolynomial()==res);
 }
 
 void ModArithmeticTest::test_polynomial_minus()
 {
-    std::vector<number> vec1 { 5, 4, 0, 3, 2, 5};
-    std::vector<number> vec2 { 4, 0, 9, 8, 25};
-    std::vector<number> vecresult {1, 4, -9, -5, -23, 5};
-    Polynomial poly1(vec1);
-    Polynomial poly2(vec2);
-    std::vector<number> res = (poly1 - poly2).getPolynomial();
-    QCOMPARE(res,vecresult);
+    std::vector<BigInt> pol = {5,8,3,7,2};
+    Polynomial poly(pol,7);
 
-    vec1 = {1};
-    vec2 = {0, 1, 3};
-    vecresult = {1, -1, -3};
-    poly1=(vec1);
-    poly2=(vec2);
-    res = (poly1 - poly2).getPolynomial();
-    QCOMPARE(res,vecresult);
+    std::vector<BigInt> pol2 = {2,2,3,1,7};
+    Polynomial poly2(pol2,7);
+
+    Polynomial result = poly-poly2;
+    std::vector<BigModInt> res = {{3,7},{6,7},{0,7},{6,7},{2,7}};
+    QVERIFY(result.getPolynomial()==res);
+
+    pol = {5,18,3,7,9};
+    poly = {pol,7};
+
+    pol2 = {2,9,3,1};
+    poly2 = {pol2,7};
+
+    result = poly-poly2;
+    res = {{3,7},{2,7},{0,7},{6,7},{2,7}};
+    QVERIFY(result.getPolynomial()==res);
+
+
+    pol = {2,9,3,1};
+    poly = {pol,7};
+
+    pol2 = {5,18,3,7,9};
+    poly2 = {pol2,7};
+
+    result = poly-poly2;
+    res = {{4,7},{5,7},{0,7},{1,7},{5,7}};
+    QVERIFY(result.getPolynomial()==res);
 }
 
 void ModArithmeticTest::test_polynomial_mult()
 {
-    std::vector<number> vec1 { 5, 4, 0, 3, 2, 5};
-    std::vector<number> vec2 { 4, 0, 9, 8, 25};
-    std::vector<number> vecresult {20, 16, 45, 88, 165, 147,42,136,90,125};
-    Polynomial poly1(vec1);
-    Polynomial poly2(vec2);
-    std::vector<number> res = (poly1 * poly2).getPolynomial();
-    QCOMPARE(res,vecresult);
+    std::vector<BigInt> pol = {5,8,3,7,2};
+    Polynomial poly(pol,7);
+
+    std::vector<BigInt> pol2 = {2,2,3,1,7};
+    Polynomial poly2(pol2,7);
+
+    Polynomial result = poly*poly2;
+    std::vector<BigModInt> res = {{3,7},{5,7},{2,7},{0,7},{0,7},{0,7},{6,7},{2,7}};
+    QVERIFY(result.getPolynomial()==res);
 }
 
 QTEST_MAIN(ModArithmeticTest)

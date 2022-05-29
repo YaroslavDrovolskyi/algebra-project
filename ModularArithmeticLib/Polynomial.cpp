@@ -348,14 +348,19 @@ Polynomial Polynomial::operator+(const Polynomial& second)const {
 }
 
 Polynomial Polynomial::operator-(const Polynomial& second)const {
-    Polynomial result;
+	Polynomial result;
     result.polynomial.resize(std::max(second.polynomial.size(), polynomial.size()));
     (polynomial.size() < second.polynomial.size()) ? result.setPolynomial(second.polynomial) : result.setPolynomial(polynomial);
     for (size_t i = 0; i != std::min(polynomial.size(), second.polynomial.size()); ++i) {
-        result.polynomial[i] = polynomial[i] - second.polynomial[i];
-    }
-    result.removeZeros();
-    return result;
+		result.polynomial[i] = polynomial[i] - second.polynomial[i];
+	}
+	if(second.polynomial.size()>polynomial.size()){
+		for(size_t i = std::min(polynomial.size(), second.polynomial.size()); i < std::max(polynomial.size(), second.polynomial.size());++i){
+			result.polynomial[i] = - second.polynomial[i];
+		}
+	}
+	result.removeZeros();
+	return result;
 }
 
 Polynomial Polynomial::operator*(const Polynomial& second)const {

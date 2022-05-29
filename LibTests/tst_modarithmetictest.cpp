@@ -3,6 +3,7 @@
 
 // add necessary includes here
 #include "BigModInt.h"
+#include "Polynomial.h"
 
 class ModArithmeticTest : public QObject
 {
@@ -111,6 +112,14 @@ void ModArithmeticTest::test_polynomial_minus()
     Polynomial poly1(vec1);
     Polynomial poly2(vec2);
     std::vector<number> res = (poly1 - poly2).getPolynomial();
+    QCOMPARE(res,vecresult);
+
+    vec1 = {1};
+    vec2 = {0, 1, 3};
+    vecresult = {1, -1, -3};
+    poly1=(vec1);
+    poly2=(vec2);
+    res = (poly1 - poly2).getPolynomial();
     QCOMPARE(res,vecresult);
 }
 

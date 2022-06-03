@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     BigInt b(100000);
     BigInt c = a + b;
 
-    sieve(); // run Sieve of Eratosthenes to init algo of prime factorization
+//    sieve(); // run Sieve of Eratosthenes to init algo of prime factorization
 
 
     BigModInt m(BigInt{"32456789765432456787654324567843567"}, BigInt{"24356789876543234567890765432456789543245678976543245676"});
@@ -46,6 +46,26 @@ void MainWindow::on_calculate_btn_1_clicked()
         QString result = numb_calc.calculate(op_index, left_number, right_number);
 
         ui->result_1->setText(result);
+    }
+    catch(std::exception& e){
+        QMessageBox::warning(this, "Warning", e.what());
+    }
+}
+
+void MainWindow::on_calculate_btn_9_clicked()
+{
+    std::string modulus_str = ui->modulus_input->text().toStdString();
+    std::string number_str = ui->number3_input_4->text().toStdString();
+    std::string base_str = ui->number3_input_3->text().toStdString();
+
+    try{ // try to catch invalid input
+        BigInt modulus(modulus_str);
+        BigModInt number{BigInt(number_str), BigInt(modulus_str)};
+        BigModInt base{BigInt(base_str), BigInt(modulus_str)};
+
+        QString result = numb_calc.calcLog(number, base);
+
+        ui->result_10->setText(result);
     }
     catch(std::exception& e){
         QMessageBox::warning(this, "Warning", e.what());
@@ -202,4 +222,7 @@ void MainWindow::on_calculate_btn_8_clicked()
         QMessageBox::warning(this, "Warning", e.what());
     }
 }
+
+
+
 

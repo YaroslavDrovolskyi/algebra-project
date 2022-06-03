@@ -12,19 +12,19 @@ CONFIG += c++11
 SOURCES += \
     BigInt.cpp \
     BigModInt.cpp \
+    Discrete_logarithm.cpp \
     FiniteField.cpp \
     ModPolynomial.cpp \
-    Polynomial.cpp \
-    pollard_rho_factorization.cpp
+    Polynomial.cpp
 
 HEADERS += \
     BigInt.h \
     BigModInt.h \
+    Discrete_logarithm.h \
     FiniteField.h \
     ModPolynomial.h \
     ModularArithmeticLib_global.h \
-    Polynomial.h \
-    pollard_rho_factorization.h
+    Polynomial.h
 
 # Default rules for deployment.
 unix {

@@ -35,6 +35,8 @@ private slots:
 
     void on_calculate_btn_8_clicked();
 
+    void on_calculate_btn_9_clicked();
+
 private:
     Ui::MainWindow *ui;
 

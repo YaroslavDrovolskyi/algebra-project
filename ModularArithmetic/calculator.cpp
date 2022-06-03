@@ -1,4 +1,7 @@
 #include "calculator.h"
+#include "Discrete_logarithm.h"
+
+#include <limits>
 
 NumberCalculator::NumberCalculator():
     operations_names{"+", "-", "*", "/", "^ (fast)"},
@@ -50,7 +53,7 @@ QString NumberCalculator::calculate(std::size_t algo_index, const BigModInt& a){
             break;
         }
         case 2:{ // factorize (Pollard)
-            if (a.getNumber() > MAX || a.getModulus() > MAX){
+/*            if (a.getNumber() > MAX || a.getModulus() > MAX){
                 throw std::invalid_argument("modulus and number must be < 100000000 (BigInt doesn't not supported by this algo)");
             }
 
@@ -62,7 +65,8 @@ QString NumberCalculator::calculate(std::size_t algo_index, const BigModInt& a){
                 result += QString::number(factor) + " ";
             }
 
-            return result; // //////////////////////// need to add implementation of factorize (Pollard)
+            return result; // //////////////////////// need to add implementation of factorize (Pollard)*/
+        return "";
             break;
         }
         case 3:{
@@ -91,6 +95,37 @@ QString NumberCalculator::calculate(std::size_t algo_index, const BigModInt& a){
         }
 
     }
+}
+
+
+QString NumberCalculator::calcLog(const BigModInt& number, const BigModInt& base){
+    // check if input is not bigger than MAX of long long (because algo doesn't support BigInt)
+    if (number.getModulus() > 1e9 ||
+            number.getNumber() > BigInt(std::to_string(std::numeric_limits<LL>::max())) ||
+            base.getNumber() > BigInt(std::to_string(std::numeric_limits<LL>::max())))
+    {
+        throw std::invalid_argument("BigInt does not supported by this algo");
+    }
+
+
+    LL number_int = std::stoi(number.getNumber().GetString());
+    LL base_int = std::stoi(base.getNumber().GetString());
+    LL modulus_int = std::stoi(number.getModulus().GetString());
+
+    LL result_int = baby_step_giant_step_discrete_logarithm(base_int, number_int, modulus_int);
+
+    QString result = "";
+    if (result_int == -2){
+        result = "Base and modulus must be coprime";
+    }
+    else if (result_int == -1){
+        result = "No solutions";
+    }
+    else{
+        result = QString{std::to_string(result_int).c_str()};
+    }
+
+    return result;
 }
 
 PolynomialRingCalculator::PolynomialRingCalculator() :

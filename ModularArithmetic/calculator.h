@@ -7,7 +7,7 @@
 #include "Polynomial.h"
 #include "ModPolynomial.h"
 
-#include "pollard_rho_factorization.h"
+//#include "pollard_rho_factorization.h"
 
 class NumberCalculator
 {
@@ -18,6 +18,7 @@ public:
 
     QString calculate(std::size_t op_index, const BigModInt& a, const BigModInt& b);
     QString calculate(std::size_t algo_index, const BigModInt& a);
+    QString calcLog(const BigModInt& number, const BigModInt& base);
 };
 
 

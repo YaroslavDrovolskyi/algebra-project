@@ -19,7 +19,7 @@ LL floor_sqrt(LL x){ //знаходження кореня
 }
 
 
-LL fast_power_modulo(LL a, LL k, LL n){// modular exponentiation calculator????????
+LL fast_power_modulo(LL a, LL k, LL n){// modular exponentiation calculator
 
     a %= n;
 

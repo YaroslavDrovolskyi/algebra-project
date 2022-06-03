@@ -13,6 +13,9 @@ MainWindow::MainWindow(QWidget *parent)
     BigInt b(100000);
     BigInt c = a + b;
 
+    sieve(); // run Sieve of Eratosthenes to init algo of prime factorization
+
+
     BigModInt m(BigInt{"32456789765432456787654324567843567"}, BigInt{"24356789876543234567890765432456789543245678976543245676"});
     std::cout << m.getNumber() << std::endl;
 

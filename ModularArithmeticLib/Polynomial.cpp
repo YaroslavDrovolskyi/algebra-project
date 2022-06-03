@@ -370,7 +370,7 @@ Polynomial Polynomial::operator-(const Polynomial& second)const {
     Polynomial onePolMinus({ oneMinus.getNumber() }, oneMinus.getModulus());
     Polynomial result, tmp;
     result.polynomial.resize(std::max(second.polynomial.size(), polynomial.size()));
-<<<<<<< HEAD
+//<<<<<<< HEAD
     if (polynomial.size() < second.polynomial.size()) {
         result.setPolynomial((onePolMinus * second.polynomial).getPolynomial());
         tmp = *this;
@@ -384,7 +384,7 @@ Polynomial Polynomial::operator-(const Polynomial& second)const {
     }
     result.removeZeros();
     return result;
-=======
+//=======
     (polynomial.size() < second.polynomial.size()) ? result.setPolynomial(second.polynomial) : result.setPolynomial(polynomial);
     for (size_t i = 0; i != std::min(polynomial.size(), second.polynomial.size()); ++i) {
 		result.polynomial[i] = polynomial[i] - second.polynomial[i];
@@ -396,7 +396,7 @@ Polynomial Polynomial::operator-(const Polynomial& second)const {
 	}
 	result.removeZeros();
 	return result;
->>>>>>> aa6901cb38aec1706e640d283fdd73731ffb0de0
+//>>>>>>> aa6901cb38aec1706e640d283fdd73731ffb0de0
 }
 
 Polynomial Polynomial::operator*(const Polynomial& second)const {

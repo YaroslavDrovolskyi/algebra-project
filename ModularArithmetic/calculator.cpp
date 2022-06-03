@@ -44,14 +44,25 @@ QString NumberCalculator::calculate(std::size_t algo_index, const BigModInt& a){
             return QString(result.getNumber().GetString().c_str());
             break;
         }
-        case 1:{
+        case 1:{ // factorize (naive)
             BigModInt result = BigModInt(0, 5);
             return QString(result.getNumber().GetString().c_str()); // //////////////////////// need to add implementation of factorize (naive)
             break;
         }
-        case 2:{
-            BigModInt result = BigModInt(0, 5);
-            return QString(result.getNumber().GetString().c_str()); // //////////////////////// need to add implementation of factorize (Pollard)
+        case 2:{ // factorize (Pollard)
+            if (a.getNumber() > MAX || a.getModulus() > MAX){
+                throw std::invalid_argument("modulus and number must be < 100000000 (BigInt doesn't not supported by this algo)");
+            }
+
+            int n = std::stoi(a.getNumber().GetString());
+            std::vector<int> factorization = make_factorize(n);
+
+            QString result;
+            for (int factor : factorization){
+                result += QString::number(factor) + " ";
+            }
+
+            return result; // //////////////////////// need to add implementation of factorize (Pollard)
             break;
         }
         case 3:{

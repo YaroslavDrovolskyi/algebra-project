@@ -14,7 +14,8 @@ SOURCES += \
     BigModInt.cpp \
     FiniteField.cpp \
     ModPolynomial.cpp \
-    Polynomial.cpp
+    Polynomial.cpp \
+    pollard_rho_factorization.cpp
 
 HEADERS += \
     BigInt.h \
@@ -22,7 +23,8 @@ HEADERS += \
     FiniteField.h \
     ModPolynomial.h \
     ModularArithmeticLib_global.h \
-    Polynomial.h
+    Polynomial.h \
+    pollard_rho_factorization.h
 
 # Default rules for deployment.
 unix {

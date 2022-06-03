@@ -7,6 +7,8 @@
 #include "Polynomial.h"
 #include "ModPolynomial.h"
 
+#include "pollard_rho_factorization.h"
+
 class NumberCalculator
 {
 public:

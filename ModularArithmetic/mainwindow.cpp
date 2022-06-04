@@ -18,6 +18,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     BigModInt m(BigInt{"32456789765432456787654324567843567"}, BigInt{"24356789876543234567890765432456789543245678976543245676"});
     std::cout << m.getNumber() << std::endl;
+    BigInt number1{"9999999999999999999999999999999999999999999999999999999999999999999"};
+    std::cout << (number1 / 2000000000).GetString() << std::endl;
 
     ui->operator_select_1->addItems(this->numb_calc.operations_names);
     ui->operator_select_2->addItems(this->numb_calc.algorithms_names);

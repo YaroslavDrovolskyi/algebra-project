@@ -113,6 +113,7 @@ QString NumberCalculator::calcLog(const BigModInt& number, const BigModInt& base
     LL modulus_int = std::stoi(number.getModulus().GetString());
 
     LL result_int = baby_step_giant_step_discrete_logarithm(base_int, number_int, modulus_int);
+//    LL result_int = baby_step_giant_step_discrete_logarithm(2, 4, 5);
 
     QString result = "";
     if (result_int == -2){
@@ -186,7 +187,12 @@ std::pair<QString, QString> PolynomialRingCalculator::calcFractionRemainer(Polyn
 
 QString PolynomialRingCalculator::calcCyclotomicPolynomial(BigInt modulus, BigInt order){
     // ////// add implementation of cyclotomic polynomial order
-
+    if (modulus <= 0){
+        throw std::invalid_argument("Modulus must be > 0");
+    }
+    if (order <= 0){
+        throw std::invalid_argument("Order must be > 0");
+    }
     return QString("This is a cyclotomic polynomial");
 }
 

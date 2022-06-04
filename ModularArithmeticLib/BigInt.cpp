@@ -71,6 +71,7 @@ BigInt::BigInt(const BigInt& other) { // copy constructor
     }
 }
 
+// Remove all begin zeros. If number = 0, one 0 will be saved
 void BigInt::RemoveBeginZeros() {
     while (this->numbers_.size() > 1 && this->numbers_[this->numbers_.size() - 1] == 0) {
         this->numbers_.pop_back();
@@ -138,7 +139,7 @@ BigInt operator+(const BigInt& a, const BigInt& b) {
 	else { // a >= 0, b >= 0, it is the basic case
         std::size_t size = std::max(a.numbers_.size(), b.numbers_.size());
 		int carry = 0;
-		for (std::size_t i = 0; i < size || carry > 0; i++) {
+        for (std::size_t i = 0; i < size || carry > 0; i++) { // addition in column
 			int a_digit = (i < a.numbers_.size() ? a.numbers_[i] : 0);
 			int b_digit = (i < b.numbers_.size() ? b.numbers_[i] : 0);
 
@@ -280,7 +281,7 @@ BigInt operator/(const BigInt& a, int b) {
         b = abs(b); // to avoid sign conflict
     }
     int carry = 0;
-    for (int i = a.numbers_.size() - 1; i >= 0; i--) {
+    for (int i = a.numbers_.size() - 1; i >= 0; i--) { // usual division in column
         long long current = a.numbers_[i] + carry * 1ll * base;
         fraction.numbers_.push_back(current / b);
         carry = current % b;
@@ -288,7 +289,7 @@ BigInt operator/(const BigInt& a, int b) {
     std::reverse(fraction.numbers_.begin(), fraction.numbers_.end());
     fraction.RemoveBeginZeros();
 
-
+    // define sign of result
     if (fraction.numbers_.size() != 1 || fraction.numbers_[0] != 0) { // if number isn't 0
         if (a.is_negative_ && !b_negative || !a.is_negative_ && b_negative) {
             fraction.is_negative_ = true;
@@ -430,7 +431,9 @@ std::ostream& operator<< (std::ostream& out, const BigInt& a) {
 		result += std::to_string(a.numbers_[i]);
 	}
 
-	int carry = result.length() % 3;
+    // for printing with spaces in 3 symbols. Example: 1 000 000
+    int carry = result.length() % 3; // number of extra symbols that ban printing space directly in 3 sympols
+    // it is the same that print space in [carry] position and than simple print space in (carry + 3), (carry + 6), ... positins
 	for (std::size_t i = 0; i < result.length(); i++) {
 		out << result[i];
 		if ((i + 1) % 3 == carry && i != result.length() - 1) {

@@ -46,7 +46,7 @@ extern "C++" {
         BigInt(const std::string& number);
 		BigInt(int a);
 
-		std::string GetString();
+        std::string GetString() const;
 		void Print();
 
         BigInt& operator++();

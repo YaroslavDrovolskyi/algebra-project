@@ -12,6 +12,7 @@ CONFIG += c++11
 SOURCES += \
     BigInt.cpp \
     BigModInt.cpp \
+    EulerPhiCarmichaelLambda.cpp \
     FiniteField.cpp \
     ModPolynomial.cpp \
     Polynomial.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
 HEADERS += \
     BigInt.h \
     BigModInt.h \
+    EulerPhiCarmichaelLambda.h \
     FiniteField.h \
     ModPolynomial.h \
     ModularArithmeticLib_global.h \

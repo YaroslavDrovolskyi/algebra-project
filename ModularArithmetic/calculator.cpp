@@ -2,14 +2,16 @@
 #include "discrete_log.h"
 #include "pollard_fact.h"
 #include "PrimeProbabilityChecker.h"
+#include "EulerPhiCarmichaelLambda.h"
+
 
 #include <limits>
 
 NumberCalculator::NumberCalculator():
     operations_names{"+", "-", "*", "/", "^ (fast)"},
-    algorithms_names{"Revert element", "factorize (naive)", "factorize (Pollard)", "Square root",
-                     "Euler's totient function", "Carmichael function"},
-    primality_tests_names {"Miller–Rabin test", "Solovey-Shtrassen test", "Ferma test"}
+    primality_tests_names {"Miller–Rabin test", "Solovey-Shtrassen test", "Ferma test"},
+    int_functions_names{"Factorize (naive)", "Factorize (Pollard)", "Euler's totient function", "Carmichael function"},
+    int_modular_functions_names {"Inverse element", "Square root"}
 {
 
 }
@@ -44,21 +46,15 @@ QString NumberCalculator::calculate(std::size_t op_index, const BigModInt& a, co
     }
 }
 
-QString NumberCalculator::calculate(std::size_t algo_index, const BigModInt& a){
+QString NumberCalculator::calcIntFunction(std::size_t algo_index, const BigInt& number){
     switch(algo_index){
-        case 0:{
-            BigModInt result = inverse(a);
-            return QString(result.getNumber().GetString().c_str());
-            break;
-        }
-        case 1:{ // factorize (naive)
-            if (a.getModulus() > 1e9 ||
-                    a.getNumber() > BigInt(std::to_string(std::numeric_limits<LL>::max())))
+        case 0:{ // factorize (naive)
+            if (number > BigInt(std::to_string(std::numeric_limits<int>::max())))
             {
                 throw std::invalid_argument("BigInt does not supported by this algo");
             }
 
-            int n = std::stoi(a.getNumber().GetString());
+            LL n = std::stoi(number.GetString());
 
             if (n == 0){
                 return "0";
@@ -77,14 +73,13 @@ QString NumberCalculator::calculate(std::size_t algo_index, const BigModInt& a){
             return result;
             break;
         }
-        case 2:{ // factorize (Pollard)
-            if (a.getModulus() > 1e9 ||
-                    a.getNumber() > BigInt(std::to_string(std::numeric_limits<LL>::max())))
+        case 1:{ // factorize (Pollard)
+            if (number > BigInt(std::to_string(std::numeric_limits<LL>::max())))
             {
                 throw std::invalid_argument("BigInt does not supported by this algo");
             }
 
-            int n = std::stoi(a.getNumber().GetString());
+            int n = std::stoi(number.GetString());
             std::vector<LL> factorization = make_factorize(n);
 
 
@@ -101,19 +96,36 @@ QString NumberCalculator::calculate(std::size_t algo_index, const BigModInt& a){
             return result;
             break;
         }
-        case 3:{
-            BigModInt result = BigModInt(0, 5);
-            return QString(result.getNumber().GetString().c_str()); // //////////////////////// need to add implementation of Square root (task 6)
+        case 2:{ // Euler's totient function
+            BigInt result = EulerPhiCarmichaelLambda::eulerPhi(number);
+            return QString(result.GetString().c_str());
             break;
         }
-        case 4:{
-            BigModInt result = BigModInt(0, 5);
-            return QString(result.getNumber().GetString().c_str()); // //////////////////////// need to add implementation of Euler's totient function
+        case 3:{ // Carmichael function
+            BigInt result = EulerPhiCarmichaelLambda::carmichaelLambda(number);
+            return QString(result.GetString().c_str());
             break;
         }
-        case 5:{
+        default:{
+            return "";
+            break;
+        }
+
+    }
+}
+
+
+QString NumberCalculator::calcModIntFunction(std::size_t algo_index, const BigModInt& number){
+    switch(algo_index){
+        case 0:{ // inverse number
+            BigModInt result = inverse(number);
+            return QString(result.getNumber().GetString().c_str());
+            break;
+        }
+        case 1:{
             BigModInt result = BigModInt(0, 5);
-            return QString(result.getNumber().GetString().c_str()); // //////////////////////// need to add implementation of Carmichael function
+          //  return QString(result.getNumber().GetString().c_str()); // //////////////////////// need to add implementation of Square root (task 6)
+            return "Need to add implementation of square root";
             break;
         }
         default:{

@@ -22,10 +22,11 @@ MainWindow::MainWindow(QWidget *parent)
     std::cout << (number1 / 2000000000).GetString() << std::endl;
 
     ui->operator_select_1->addItems(this->numb_calc.operations_names);
-    ui->operator_select_2->addItems(this->numb_calc.algorithms_names);
+    ui->operator_select_2->addItems(this->numb_calc.int_functions_names);
     ui->operator_select_3->addItems(this->pol_ring_calc.operations_names);
     ui->operator_select_4->addItems(this->pol_field_calc.algorithms_names);
     ui->operator_select_5->addItems(this->numb_calc.primality_tests_names);
+    ui->operator_select_6->addItems(this->numb_calc.int_modular_functions_names);
 }
 
 MainWindow::~MainWindow()
@@ -76,6 +77,8 @@ void MainWindow::on_calculate_btn_9_clicked()
 }
 
 
+
+
 void MainWindow::on_calculate_btn_10_clicked()
 {
     std::string number_str = ui->number3_input_2->text().toStdString();
@@ -96,16 +99,35 @@ void MainWindow::on_calculate_btn_10_clicked()
 
 void MainWindow::on_calculate_btn_2_clicked()
 {
-    std::string modulus_str = ui->modulus_input->text().toStdString();
     std::string number_str = ui->number3_input->text().toStdString();
-    std::size_t algo_index = ui->operator_select_2->currentIndex();
+    std::size_t function_index = ui->operator_select_2->currentIndex();
+
+    try{ // try to catch invalid input
+        BigInt number{number_str};
+
+        QString result = numb_calc.calcIntFunction(function_index, number);
+
+        ui->result_2->setText(result);
+    }
+    catch(const std::exception& e){
+        QMessageBox::warning(this, "Warning", e.what());
+    }
+}
+
+
+
+void MainWindow::on_calculate_btn_11_clicked()
+{
+    std::string modulus_str = ui->modulus_input->text().toStdString();
+    std::string number_str = ui->number3_input_5->text().toStdString();
+    std::size_t algo_index = ui->operator_select_6->currentIndex();
 
     try{ // try to catch invalid input
         BigModInt number{BigInt{number_str}, BigInt{modulus_str}};
 
-        QString result = numb_calc.calculate(algo_index, number); // calculate result
+        QString result = numb_calc.calcModIntFunction(algo_index, number); // calculate result
 
-        ui->result_2->setText(result);
+        ui->result_12->setText(result);
     }
     catch(const std::exception& e){
         QMessageBox::warning(this, "Warning", e.what());
@@ -243,6 +265,8 @@ void MainWindow::on_calculate_btn_8_clicked()
         QMessageBox::warning(this, "Warning", e.what());
     }
 }
+
+
 
 
 

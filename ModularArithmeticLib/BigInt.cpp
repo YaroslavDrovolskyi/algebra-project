@@ -443,7 +443,7 @@ std::ostream& operator<< (std::ostream& out, const BigInt& a) {
 	return out;
 }
 
-std::string BigInt::GetString() {
+std::string BigInt::GetString() const {
 	std::string result;
 	if (this->is_negative_ == true) {
 		result += "-";

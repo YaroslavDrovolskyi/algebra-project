@@ -14,11 +14,13 @@ class NumberCalculator
 public:
     NumberCalculator();
     const QVector<QString> operations_names;
-    const QVector<QString> algorithms_names;
     const QVector<QString> primality_tests_names;
+    const QVector<QString> int_functions_names;
+    const QVector<QString> int_modular_functions_names;
 
     QString calculate(std::size_t op_index, const BigModInt& a, const BigModInt& b);
-    QString calculate(std::size_t algo_index, const BigModInt& a);
+    QString calcIntFunction(std::size_t algo_index, const BigInt& number);
+    QString calcModIntFunction(std::size_t algo_index, const BigModInt& number);
     QString calcLog(const BigModInt& number, const BigModInt& base);
     QString calcPrimalityTest(std::size_t algo_index, const BigInt& a);
 };

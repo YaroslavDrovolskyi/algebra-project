@@ -15,7 +15,8 @@ SOURCES += \
     Discrete_logarithm.cpp \
     FiniteField.cpp \
     ModPolynomial.cpp \
-    Polynomial.cpp
+    Polynomial.cpp \
+    EulerPhiCarmichaelLambda.cpp
 
 HEADERS += \
     BigInt.h \
@@ -24,7 +25,8 @@ HEADERS += \
     FiniteField.h \
     ModPolynomial.h \
     ModularArithmeticLib_global.h \
-    Polynomial.h
+    Polynomial.h \
+    EulerPhiCarmichaelLambda.h
 
 # Default rules for deployment.
 unix {

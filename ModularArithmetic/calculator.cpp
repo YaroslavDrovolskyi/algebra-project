@@ -1,5 +1,6 @@
 #include "calculator.h"
-#include "Discrete_logarithm.h"
+#include "discrete_log.h"
+#include "pollard_fact.h"
 
 #include <limits>
 
@@ -34,9 +35,10 @@ QString NumberCalculator::calculate(std::size_t op_index, const BigModInt& a, co
             return QString((a+b).getNumber().GetString().c_str()); // ///////////////// need to add implementation of task 4 fast powering
             break;
         }
-    default:
-        return "";
-        break;
+        default:{
+            return "";
+            break;
+        }
     }
 }
 
@@ -48,25 +50,53 @@ QString NumberCalculator::calculate(std::size_t algo_index, const BigModInt& a){
             break;
         }
         case 1:{ // factorize (naive)
-            BigModInt result = BigModInt(0, 5);
-            return QString(result.getNumber().GetString().c_str()); // //////////////////////// need to add implementation of factorize (naive)
-            break;
-        }
-        case 2:{ // factorize (Pollard)
-/*            if (a.getNumber() > MAX || a.getModulus() > MAX){
-                throw std::invalid_argument("modulus and number must be < 100000000 (BigInt doesn't not supported by this algo)");
+            if (a.getModulus() > 1e9 ||
+                    a.getNumber() > BigInt(std::to_string(std::numeric_limits<LL>::max())))
+            {
+                throw std::invalid_argument("BigInt does not supported by this algo");
             }
 
             int n = std::stoi(a.getNumber().GetString());
-            std::vector<int> factorization = make_factorize(n);
+
+            if (n == 0){
+                return "0";
+            }
+            else if (n == 1){
+                return "1";
+            }
+
+            std::vector<LL> factorization = make_factorize2(n);
 
             QString result;
             for (int factor : factorization){
                 result += QString::number(factor) + " ";
             }
 
-            return result; // //////////////////////// need to add implementation of factorize (Pollard)*/
-        return "";
+            return result;
+            break;
+        }
+        case 2:{ // factorize (Pollard)
+            if (a.getModulus() > 1e9 ||
+                    a.getNumber() > BigInt(std::to_string(std::numeric_limits<LL>::max())))
+            {
+                throw std::invalid_argument("BigInt does not supported by this algo");
+            }
+
+            int n = std::stoi(a.getNumber().GetString());
+            std::vector<LL> factorization = make_factorize(n);
+
+
+
+            QString result;
+            for (int factor : factorization){
+                result += QString::number(factor) + " ";
+            }
+
+            if (n == 1){
+                result = "1";
+            }
+
+            return result;
             break;
         }
         case 3:{

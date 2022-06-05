@@ -15,11 +15,13 @@ bool isPrime(LL num)
     return flag;
 }
 
+/*
 LL abs(LL a
 )
 {
     return a>0?a:-a;
 }
+*/
 
 LL gcd(LL a,LL b)
 {

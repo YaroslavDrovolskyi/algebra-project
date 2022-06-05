@@ -1,4 +1,5 @@
 #include "discrete_log.h"
+#include <vector>
 
 /*LL floor_sqrt(LL x)
 {
@@ -10,6 +11,8 @@
 
     return res -1;
 }*/
+
+/*
 bool isPrime(LL num)
 
 {
@@ -24,6 +27,7 @@ bool isPrime(LL num)
     }
     return flag;
 }
+*/
 
 LL fast_power(LL base, LL power, LL mod)
 {
@@ -40,6 +44,7 @@ LL fast_power(LL base, LL power, LL mod)
     return result;
 }
 
+/*
 LL gcd(LL a, LL b)
 {
     LL tmp;
@@ -51,6 +56,7 @@ LL gcd(LL a, LL b)
     }
     return a;
 }
+*/
 
 LL baby_step_giant_step_discrete_logarithm(LL a, LL b, LL n)
 {

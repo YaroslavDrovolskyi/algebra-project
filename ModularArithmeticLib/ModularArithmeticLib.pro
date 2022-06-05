@@ -12,21 +12,21 @@ CONFIG += c++11
 SOURCES += \
     BigInt.cpp \
     BigModInt.cpp \
+    Discrete_logarithm.cpp \
     FiniteField.cpp \
     ModPolynomial.cpp \
     Polynomial.cpp \
-    discrete_log.cpp \
-    pollard_fact.cpp
+    EulerPhiCarmichaelLambda.cpp
 
 HEADERS += \
     BigInt.h \
     BigModInt.h \
+    Discrete_logarithm.h \
     FiniteField.h \
     ModPolynomial.h \
     ModularArithmeticLib_global.h \
     Polynomial.h \
-    discrete_log.h \
-    pollard_fact.h
+    EulerPhiCarmichaelLambda.h
 
 # Default rules for deployment.
 unix {

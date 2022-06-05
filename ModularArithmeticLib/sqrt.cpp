@@ -25,7 +25,7 @@ double Sqrt::PowerOfTen(int num)
     return rst;
 }
 
-double Sqrt::SquareRoot(double a)
+double Sqrt::SquareRoot(long long a)
 {
 
     double z = a;

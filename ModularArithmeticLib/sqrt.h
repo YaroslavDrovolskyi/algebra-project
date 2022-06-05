@@ -7,5 +7,5 @@ class Sqrt
 private:
 	static double PowerOfTen(int num);
 public:
-	static double SquareRoot(double a);
+	static double SquareRoot(long long a);
 };

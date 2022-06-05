@@ -33,6 +33,7 @@ Polynomial::Polynomial(std::string pol, BigInt modulus)
     bool isNegativeNumber = 0;
     bool isXor = 0;
     bool isFirstXor = 0;
+    bool isKoefZero = 1;
 
     pol.erase(remove(pol.begin(), pol.end(), ' '), pol.end());
     if (pol[pol.size() - 1] >= '0' && pol[pol.size() - 1] <= '9') {
@@ -76,21 +77,25 @@ Polynomial::Polynomial(std::string pol, BigInt modulus)
             if (pol[i] >= '0' && pol[i] <= '9') {
                 koef = koef * 10;
                 koef = koef + pol[i] - 48;
+                isKoefZero = 0;
             }
             if ((i == pol.size() - 1 || pol[i + 1] < '0' || pol[i + 1] > '9') && isPositiveNumber) {
                 isPositiveNumber = 0;
-                if (koef == 0)
+                if (koef == 0 && isKoefZero)
                     koef = 1;
                 koefs.push_back(koef);
+                isKoefZero = 1;
             }
             else if ((i == pol.size() - 1 || pol[i + 1] < '0' || pol[i + 1] > '9') && isNegativeNumber) {
                 isNegativeNumber = 0;
-                if (koef == 0)
+                if (koef == 0 && isKoefZero)
                     koef = 1;
                 koefs.push_back(-1 * koef);
+                isKoefZero = 1;
             }
             else if ((i == pol.size() - 1 || pol[i + 1] < '0' || pol[i + 1] > '9') && isXor) {
                 isXor = 0;
+                isKoefZero = 1;
                 if (!isFirstXor) {
                     isFirstXor = 1;
                     prevXor = koef;
@@ -261,6 +266,10 @@ std::pair<Polynomial, Polynomial> Polynomial::divide(Polynomial& pol) {
         throw std::invalid_argument("polynom can't be empty");
     if(this->getFieldModulus() != pol.getFieldModulus())
         throw std::invalid_argument("Finite field must be same");
+    BigModInt zero(BigInt(0), this->getFieldModulus());
+
+    if (pol.polynomial.size()==1 && pol.polynomial[0] == zero)
+        throw std::invalid_argument("dividing on zero");
     if (pol.getPolynomial().size() > this->polynomial.size()) {
         return std::make_pair(Polynomial(), Polynomial(this->polynomial));
     }
@@ -272,7 +281,6 @@ std::pair<Polynomial, Polynomial> Polynomial::divide(Polynomial& pol) {
     std::vector<BigModInt> fraction(fractionSize);
     std::vector<BigModInt> remainder = this->polynomial;
 
-    BigModInt zero(BigInt(0), this->getFieldModulus());
 
     for (int i = 0; i < fractionSize; ++i) {
         currentIndex = fractionSize - 1 - i;
@@ -290,7 +298,6 @@ std::pair<Polynomial, Polynomial> Polynomial::divide(Polynomial& pol) {
 
     return std::make_pair(Polynomial(fraction, this->getFieldModulus()), Polynomial(remainder, this->getFieldModulus()).removeZeros());
 }
-
 
 Polynomial Polynomial::gcd(Polynomial& pol) {
     pol.removeZeros();
@@ -431,8 +438,9 @@ std::string Polynomial::toString()const
     BigInt zero(0);
     BigInt one(1);
     bool isOut = false;
+    //if(this->polynomial.size()==1 && this->polynomial[0]==zero)
     for (int i = this->polynomial.size() - 1; i >= 0; --i) {
-        if (polynomial[i].getNumber() != zero) {
+        if (i==0 || polynomial[i].getNumber() != zero) {
             if (isOut)
                 resultString += " + ";
             isOut = true;

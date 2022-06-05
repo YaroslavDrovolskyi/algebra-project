@@ -1,13 +1,15 @@
 #include "calculator.h"
 #include "discrete_log.h"
 #include "pollard_fact.h"
+#include "PrimeProbabilityChecker.h"
 
 #include <limits>
 
 NumberCalculator::NumberCalculator():
     operations_names{"+", "-", "*", "/", "^ (fast)"},
     algorithms_names{"Revert element", "factorize (naive)", "factorize (Pollard)", "Square root",
-                     "Euler's totient function", "Carmichael function", "Miller–Rabin test"}
+                     "Euler's totient function", "Carmichael function"},
+    primality_tests_names {"Miller–Rabin test", "Solovey-Shtrassen test", "Ferma test"}
 {
 
 }
@@ -114,11 +116,6 @@ QString NumberCalculator::calculate(std::size_t algo_index, const BigModInt& a){
             return QString(result.getNumber().GetString().c_str()); // //////////////////////// need to add implementation of Carmichael function
             break;
         }
-        case 6:{
-            bool result = true;
-            return result ? "true" : "false"; // //////////////////////// need to add implementation of Miller–Rabin test
-            break;
-        }
         default:{
             return "";
             break;
@@ -154,6 +151,40 @@ QString NumberCalculator::calcLog(const BigModInt& number, const BigModInt& base
     }
     else{
         result = QString{std::to_string(result_int).c_str()};
+    }
+
+    return result;
+}
+
+
+QString NumberCalculator::calcPrimalityTest(std::size_t algo_index, const BigInt& a){
+    if (a < 0){
+        throw std::invalid_argument("Number must be >= 0");
+    }
+
+    QString result;
+    PrimeProbabilityChecker checker;
+
+    switch(algo_index){
+        case 0:{
+        result = "Need to add implementation of Miller-Rabin test";
+            // //////////////////////////////////// need to add implmentation of Miller-Rabin test
+            break;
+        }
+        case 1:{
+            bool result_bool = checker.checkBySoloveyShtrassen(a);
+            result = result_bool ? "Number is prime" : "Number is not prime";
+            break;
+        }
+        case 2:{
+            bool result_bool = checker.checkByFerma(a);
+            result = result_bool ? "Number is prime" : "Number is not prime";
+            break;
+        }
+        default:{
+            result = "default case";
+            break;
+        }
     }
 
     return result;

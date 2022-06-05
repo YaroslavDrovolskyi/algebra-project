@@ -1,6 +1,7 @@
 #pragma once
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>
 #include "BigModInt.h"
+#include "ModularArithmeticLib_global.h"
 using namespace std;
 
 #define bi(x) BigInt(x)
@@ -8,7 +9,7 @@ using namespace std;
 
 const BigInt MOD = BigInt(1e9 + 7);
 
-class PrimeProbabilityChecker
+class MODULARARITHMETICLIB_EXPORT PrimeProbabilityChecker
 {
 public:
 

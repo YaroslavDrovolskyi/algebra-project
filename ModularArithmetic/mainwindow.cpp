@@ -25,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->operator_select_2->addItems(this->numb_calc.algorithms_names);
     ui->operator_select_3->addItems(this->pol_ring_calc.operations_names);
     ui->operator_select_4->addItems(this->pol_field_calc.algorithms_names);
+    ui->operator_select_5->addItems(this->numb_calc.primality_tests_names);
 }
 
 MainWindow::~MainWindow()
@@ -68,6 +69,24 @@ void MainWindow::on_calculate_btn_9_clicked()
         QString result = numb_calc.calcLog(number, base);
 
         ui->result_10->setText(result);
+    }
+    catch(std::exception& e){
+        QMessageBox::warning(this, "Warning", e.what());
+    }
+}
+
+
+void MainWindow::on_calculate_btn_10_clicked()
+{
+    std::string number_str = ui->number3_input_2->text().toStdString();
+    std::size_t algo_index = ui->operator_select_5->currentIndex();
+
+    try{ // try to catch invalid input
+        BigInt number{number_str};
+
+        QString result = numb_calc.calcPrimalityTest(algo_index, number);
+
+        ui->result_11->setText(result);
     }
     catch(std::exception& e){
         QMessageBox::warning(this, "Warning", e.what());
@@ -224,6 +243,8 @@ void MainWindow::on_calculate_btn_8_clicked()
         QMessageBox::warning(this, "Warning", e.what());
     }
 }
+
+
 
 
 

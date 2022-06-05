@@ -25,6 +25,7 @@ HEADERS += \
     ModPolynomial.h \
     ModularArithmeticLib_global.h \
     Polynomial.h \
+    PrimeProbabilityChecker.h \
     discrete_log.h \
     pollard_fact.h
 

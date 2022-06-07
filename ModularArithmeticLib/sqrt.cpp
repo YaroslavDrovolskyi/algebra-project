@@ -3,66 +3,75 @@
 #include <iostream>
 #include "sqrt.h"
 
-
-double Sqrt::PowerOfTen(int num) 
-{
-    double rst = 1.0;
-    if (num >= 0) 
-    {
-        for (int i = 0; i < num; i++) 
-        {
-            rst *= 10.0;    
-        }   
+int powerMod(int base, int exponent, int modulus) {
+    int result = 1;
+    base = base % modulus;
+    while (exponent > 0) {
+        if (exponent % 2 == 1)
+            result = (result * base) % modulus;
+        exponent = exponent >> 1;
+        base = (base * base) % modulus;
     }
-    else 
-    {
-        for (int i = 0; i < (0 - num); i++) 
-        {
-            rst *= 0.1; 
-        }   
-    }
-    
-    return rst;
+    return result;
 }
-
-int Sqrt::SquareRoot(long long a, int mod)
-{
-    if (a >= 0)
-    {
-        double z = a;
-        double rst = 0.0;
-        int max = 8;
-        int i;
-        double j = 1.0;
-        for (i = max; i > 0; i--) {
-            if (z - ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i)) >= 0)
-            {
-                while (z - ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i)) >= 0)
-                {
-                    j++;
-                    if (j >= 10) break;
-                }
-                j--;
-                z -= ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i));
-                rst += j * PowerOfTen(i);
-                j = 1.0;
-            }
-        }
-
-        for (i = 0; i >= 0 - max; i--) {
-            if (z - ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i)) >= 0)
-            {
-                while (z - ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i)) >= 0) j++;
-                j--;
-                z -= ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i));
-                rst += j * PowerOfTen(i);
-                j = 1.0;
-            }
-        }
-        return rst;
-    }
+int gcd(int a, int b) {
+    if (b == 0)
+        return a;
     else
-    {
-        std::cout << "Isn`t valid value" << std::endl;
+        return gcd(b, a % b);
+}
+int orderValues(int p, int b) {
+    if (gcd(p, b) != 1) {
+        return -1;
+    }
+    int k = 3;
+    while (1) {
+        if (powerMod(b, k, p) == 1)
+            return k;
+        k++;
+    }
+}
+int findx2e(int x, int& e) {
+    e = 0;
+    while (x % 2 == 0) {
+        x /= 2;
+        e++;
+    }
+    return x;
+}
+int calcSquareRoot(int n, int p) {
+    if (gcd(n, p) != 1) {
+        return -1;
+    }
+    if (powerMod(n, (p - 1) / 2, p) == (p - 1)) {
+        return -1;
+    }
+    int s, e;
+    s = findx2e(p - 1, e);
+    int q;
+    for (q = 2; ; q++) {
+        if (powerMod(q, (p - 1) / 2, p) == (p - 1))
+            break;
+    }
+    int x = powerMod(n, (s + 1) / 2, p);
+    int b = powerMod(n, s, p);
+    int g = powerMod(q, s, p);
+    int r = e;
+    while (1) {
+        int m;
+        for (m = 0; m < r; m++) {
+            if (orderValues(p, b) == -1)
+                return -1;
+            if (orderValues(p, b) == pow(2, m))
+                break;
+        }
+        if (m == 0)
+            return x;
+        x = (x * powerMod(g, pow(2, r - m - 1), p)) % p;
+        g = powerMod(g, pow(2, r - m), p);
+        b = (b * g) % p;
+        if (b == 1)
+            return x;
+        r = m;
     }
 }

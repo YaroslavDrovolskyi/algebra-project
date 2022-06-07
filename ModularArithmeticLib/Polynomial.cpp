@@ -271,7 +271,7 @@ std::pair<Polynomial, Polynomial> Polynomial::divide(Polynomial& pol) {
     if (pol.polynomial.size()==1 && pol.polynomial[0] == zero)
         throw std::invalid_argument("dividing on zero");
     if (pol.getPolynomial().size() > this->polynomial.size()) {
-        return std::make_pair(Polynomial(), Polynomial(this->polynomial));
+        return std::make_pair(Polynomial("0", this->getFieldModulus()), Polynomial(this->polynomial));
     }
 
     long long fractionSize = this->polynomial.size() - 1 - (pol.getPolynomial().size() - 1) + 1;

@@ -1,5 +1,5 @@
 #pragma once
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>
 #include "BigModInt.h"
 #include "Polynomial.h"
 using namespace std;

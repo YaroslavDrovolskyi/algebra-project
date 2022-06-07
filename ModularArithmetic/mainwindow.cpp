@@ -268,8 +268,21 @@ void MainWindow::on_calculate_btn_8_clicked()
 
 
 
+void MainWindow::on_calculate_btn_12_clicked()
+{
+    std::string modulus_str = ui->modulus_input->text().toStdString();
+    std::string pol_str = ui->polynomial_8_input->text().toStdString();
 
+    try{
+        BigInt modulus(modulus_str);
+        Polynomial polynomial(pol_str, modulus);
 
+        QString result = pol_field_calc.calcIrreducibilityTest(polynomial);
 
-
+        ui->result_13->setText(result);
+    }
+    catch(const std::exception& e){
+        QMessageBox::warning(this, "Warning", e.what());
+    }
+}
 

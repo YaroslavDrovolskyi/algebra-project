@@ -3,6 +3,7 @@
 #include "pollard_fact.h"
 #include "PrimeProbabilityChecker.h"
 #include "EulerPhiCarmichaelLambda.h"
+#include "IrreduciblePolynomial.h"
 
 
 #include <limits>
@@ -179,8 +180,8 @@ QString NumberCalculator::calcPrimalityTest(std::size_t algo_index, const BigInt
 
     switch(algo_index){
         case 0:{
-        result = "Need to add implementation of Miller-Rabin test";
-            // //////////////////////////////////// need to add implmentation of Miller-Rabin test
+            bool result_bool = checker.checkByMillerRabin(a);
+            result = result_bool ? "Number is prime" : "Number is not prime";
             break;
         }
         case 1:{
@@ -272,7 +273,7 @@ QString PolynomialRingCalculator::calcCyclotomicPolynomial(BigInt modulus, BigIn
 
 
 PolynomialFieldCalculator::PolynomialFieldCalculator() :
-    algorithms_names{"Check for irreducibility", "revert"}
+    algorithms_names{"revert"}
 {
 
 }
@@ -280,10 +281,6 @@ PolynomialFieldCalculator::PolynomialFieldCalculator() :
 QString PolynomialFieldCalculator::calc(std::size_t op_index, Polynomial irreducible_pol, ModPolynomial a){
     switch(op_index){
         case 0:{
-            return QString("It will be checking for resucibility"); // ////////////////////////// need to add implmentation of chicnking for reducibility
-            break;
-        }
-        case 1:{
             ModPolynomial result = a.inversePolynomial();
             return QString(result.getValue().toString().c_str());
             break;
@@ -293,4 +290,15 @@ QString PolynomialFieldCalculator::calc(std::size_t op_index, Polynomial irreduc
            break;
         }
     }
+}
+
+
+QString PolynomialFieldCalculator::calcIrreducibilityTest(Polynomial polynomial){
+    IrreduciblePolynomial checker;
+    bool result_bool = checker.isIrreducible(polynomial);
+
+    QString result = "Polynomial is ";
+    result += result_bool ? "irreducible" : "reducible";
+
+    return result;
 }

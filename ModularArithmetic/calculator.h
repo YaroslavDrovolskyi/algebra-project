@@ -46,6 +46,7 @@ public:
     const QVector<QString> algorithms_names;
 
     QString calc(std::size_t op_index, Polynomial irreducible_pol, ModPolynomial a);
+    QString calcIrreducibilityTest(Polynomial polynomial);
 };
 
 #endif // CALCULATOR_H

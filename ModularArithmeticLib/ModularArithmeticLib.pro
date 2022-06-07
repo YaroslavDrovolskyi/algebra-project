@@ -24,6 +24,7 @@ HEADERS += \
     BigModInt.h \
     EulerPhiCarmichaelLambda.h \
     FiniteField.h \
+    IrreduciblePolynomial.h \
     ModPolynomial.h \
     ModularArithmeticLib_global.h \
     Polynomial.h \

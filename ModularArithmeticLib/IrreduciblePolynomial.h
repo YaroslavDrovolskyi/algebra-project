@@ -9,7 +9,7 @@ class IrreduciblePolynomial
 public:
 
 	bool isIrreducible(Polynomial pol) {
-		cout << pol << endl;
+//        cout << pol << endl;
 		int n = pol.getPolynomial().size() - 1;
 		BigInt p = pol.getFieldModulus();
 		if (n == 1) return true;

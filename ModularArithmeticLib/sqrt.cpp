@@ -25,7 +25,12 @@ double Sqrt::PowerOfTen(int num)
     return rst;
 }
 
-double Sqrt::SquareRoot(long long a)
+int mod(long long a, int rst)
+{
+    return a - rst ^ 2;
+}
+
+int Sqrt::SquareRoot(long long a, int &modRef)
 {
     if (a >= 0)
     {
@@ -59,15 +64,11 @@ double Sqrt::SquareRoot(long long a)
                 j = 1.0;
             }
         }
+        modRef = mod(a, rst);
         return rst;
     }
     else
     {
         std::cout << "Isn`t valid value" << std::endl;
     }
-}
-
-void main()
-{
-    std::cout << Sqrt.SquareRoot(12) << std::endl;
 }

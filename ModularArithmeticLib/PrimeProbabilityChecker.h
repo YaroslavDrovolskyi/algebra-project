@@ -19,7 +19,7 @@ public:
 				return true;
 			return false;
 		}
-		for (int i = 2; i <= tests + 1; i++) {
+		for (int i = 2; i <= (tests + 1) && i < p; i++) {
 			if (gcd(bi(i), p) != 1) return false;
 			BigModInt a(bi(i), p);
 			if (fpow(a, p - 1).getNumber() != 1) return false;
@@ -34,12 +34,35 @@ public:
 			return false;
 		}
 		if (p % 2 == 0) return false;
-		for (int i = 2; i <= tests + 1; i++) {
+		for (int i = 2; i <= (tests + 1) && i < p; i++) {
 			if (gcd(bi(i), p) != 1) return false;
 			BigModInt a(bi(i), p);
 			BigInt jac = jacobi(bi(i), p);
 			if (jac == -1) jac = p - 1;
 			if (fpow(a, (p - 1) / 2).getNumber() != jac) return false;
+		}
+		return true;
+	}
+	
+	bool checkByMillerRabin(BigInt p, int tests = 5) {
+		if (p < 10) {
+			if (p == 2 || p == 3 || p == 5 || p == 7)
+				return true;
+			return false;
+		}
+		if (p % 2 == 0) return false;
+		BigInt s = bi(0), d = p - 1;
+		while (d % 2 == 0) {
+			d = d / 2;
+			s++;
+		}
+		for (int i = 2; i <= (tests + 1) && i < p; i++) {
+			BigModInt a(bi(i), p);
+			if (fpow(a, p - 1).getNumber() == 1) continue;
+			for (BigInt r = bi(0); r < s; r++) {
+				if(fpow(a, fpow(bmi(2,p), r).getNumber() * d).getNumber() != -1) return false;
+			}
+
 		}
 		return true;
 	}

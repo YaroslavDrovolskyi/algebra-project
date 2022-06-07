@@ -25,12 +25,7 @@ double Sqrt::PowerOfTen(int num)
     return rst;
 }
 
-int mod(long long a, int rst)
-{
-    return a - rst ^ 2;
-}
-
-int Sqrt::SquareRoot(long long a, int &modRef)
+int Sqrt::SquareRoot(long long a, int mod)
 {
     if (a >= 0)
     {
@@ -64,7 +59,6 @@ int Sqrt::SquareRoot(long long a, int &modRef)
                 j = 1.0;
             }
         }
-        modRef = mod(a, rst);
         return rst;
     }
     else

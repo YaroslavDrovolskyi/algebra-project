@@ -9,9 +9,10 @@
 
 class MODULARARITHMETICLIB_EXPORT CyclotomicPolynomial {
 private:
+    std::vector<BigModInt> polynomialSupplement(std::vector<BigModInt> a, std::vector<BigModInt> b, BigModInt term);
     std::vector<BigModInt> polynomialDivision(std::vector<BigModInt> a, std::vector<BigModInt> b);
 public:
-    std::vector<BigModInt> cyclotomicPolynomial(BigInt n);
+    std::vector<BigModInt> cyclotomicPolynomial(BigInt n, BigInt m);
 };
 
 

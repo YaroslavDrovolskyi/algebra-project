@@ -24,7 +24,6 @@ public:
 			if (n % i == 0 && isPrime(n / i)) {
 				Polynomial d_check = d - Polynomial("x", p);
 				if (d_check.getPolynomial().size() == 1 && d_check.getPolynomial().front().getNumber() == 0) return false;
-				if (d_check.gcd(pol).getPolynomial().size() > 1 || d_check.gcd(pol).getPolynomial()[0].getNumber() != 1) return false;
 			}
 		}
 		d = d - Polynomial("x", p);

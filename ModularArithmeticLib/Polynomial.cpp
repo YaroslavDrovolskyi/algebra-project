@@ -428,7 +428,7 @@ std::string Polynomial::toString()const
     BigInt one(1);
     bool isOut = false;
     //if(this->polynomial.size()==1 && this->polynomial[0]==zero)
-    for (int i = this->polynomial.size() - 1; i >= 0; --i) {
+    for (long long i = this->polynomial.size() - 1; i >= 0; --i) {
         if (i==0 || polynomial[i].getNumber() != zero) {
             if (isOut)
                 resultString += " + ";
@@ -443,9 +443,10 @@ std::string Polynomial::toString()const
             }
             resultString += 'x';
             if (i > 1) {
-                char ii = i + '0';
+
+                BigInt ii = i;
                 resultString += '^';
-                resultString += ii;
+                resultString += ii.GetString();
 
             }
         }

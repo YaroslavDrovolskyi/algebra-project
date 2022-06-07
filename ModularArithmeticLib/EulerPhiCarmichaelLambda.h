@@ -8,15 +8,15 @@
 
 class MODULARARITHMETICLIB_EXPORT EulerPhiCarmichaelLambda {
 private:
+    static BigInt sqrt(BigInt n);
+    static BigInt gcd(BigInt a, BigInt b);
+    static BigInt lcm(BigInt a, BigInt b);
+public:
     struct primeFactors {
         BigInt base;
         BigInt exponent;
     };
     static std::vector<primeFactors> primeFactorization(BigInt n);
-    static BigInt sqrt(BigInt n);
-    static BigInt gcd(BigInt a, BigInt b);
-    static BigInt lcm(BigInt a, BigInt b);
-public:
     static BigInt eulerPhi(BigInt n);
     static BigInt carmichaelLambda(BigInt n);
 };

@@ -27,36 +27,47 @@ double Sqrt::PowerOfTen(int num)
 
 double Sqrt::SquareRoot(long long a)
 {
-
-    double z = a;
-    double rst = 0.0;
-    int max = 8;
-    int i;
-    double j = 1.0;
-    for (i = max; i > 0; i--) {
-        if (z - ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i)) >= 0)
-        {
-            while (z - ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i)) >= 0)
+    if (a >= 0)
+    {
+        double z = a;
+        double rst = 0.0;
+        int max = 8;
+        int i;
+        double j = 1.0;
+        for (i = max; i > 0; i--) {
+            if (z - ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i)) >= 0)
             {
-                j++;
-                if (j >= 10) break;
+                while (z - ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i)) >= 0)
+                {
+                    j++;
+                    if (j >= 10) break;
+                }
+                j--;
+                z -= ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i));
+                rst += j * PowerOfTen(i);
+                j = 1.0;
             }
-            j--;
-            z -= ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i));
-            rst += j * PowerOfTen(i);
-            j = 1.0;
-            }
-    }
+        }
 
-    for (i = 0; i >= 0 - max; i--) {
-        if (z - ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i)) >= 0)
-        {
-            while (z - ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i)) >= 0) j++;
-            j--;
-            z -= ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i));
-            rst += j * PowerOfTen(i);
-            j = 1.0;
+        for (i = 0; i >= 0 - max; i--) {
+            if (z - ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i)) >= 0)
+            {
+                while (z - ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i)) >= 0) j++;
+                j--;
+                z -= ((2 * rst) + (j * PowerOfTen(i))) * (j * PowerOfTen(i));
+                rst += j * PowerOfTen(i);
+                j = 1.0;
             }
+        }
+        return rst;
     }
-    return rst;
+    else
+    {
+        std::cout << "Isn`t valid value" << std::endl;
+    }
+}
+
+void main()
+{
+    std::cout << Sqrt.SquareRoot(12) << std::endl;
 }

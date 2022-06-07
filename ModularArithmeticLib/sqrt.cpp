@@ -3,7 +3,7 @@
 #include <iostream>
 #include "sqrt.h"
 
-int powerMod(int base, int exponent, int modulus) {
+int Sqrt::powerMod(int base, int exponent, int modulus) {
     int result = 1;
     base = base % modulus;
     while (exponent > 0) {
@@ -14,13 +14,13 @@ int powerMod(int base, int exponent, int modulus) {
     }
     return result;
 }
-int gcd(int a, int b) {
+int Sqrt::gcd(int a, int b) {
     if (b == 0)
         return a;
     else
         return gcd(b, a % b);
 }
-int orderValues(int p, int b) {
+int Sqrt::orderValues(int p, int b) {
     if (gcd(p, b) != 1) {
         return -1;
     }
@@ -31,7 +31,7 @@ int orderValues(int p, int b) {
         k++;
     }
 }
-int findx2e(int x, int& e) {
+int Sqrt::findx2e(int x, int& e) {
     e = 0;
     while (x % 2 == 0) {
         x /= 2;
@@ -39,7 +39,7 @@ int findx2e(int x, int& e) {
     }
     return x;
 }
-int calcSquareRoot(int n, int p) {
+int Sqrt::calcSquareRoot(int n, int p) {
     if (gcd(n, p) != 1) {
         return -1;
     }

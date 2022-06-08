@@ -5,14 +5,21 @@
 
 #include "ModularArithmeticLib_global.h"
 #include "BigModInt.h"
+#include "Polynomial.h"
 #include "EulerPhiCarmichaelLambda.h"
 
 class MODULARARITHMETICLIB_EXPORT CyclotomicPolynomial {
 private:
-    std::vector<BigModInt> polynomialSupplement(std::vector<BigModInt> a, std::vector<BigModInt> b, BigModInt term);
-    std::vector<BigModInt> polynomialDivision(std::vector<BigModInt> a, std::vector<BigModInt> b);
+    struct term {
+        BigInt coefficient;
+        BigInt exponent;
+    };
+    static Polynomial toPolynomial(std::vector<term> p, BigInt m);
+    static std::vector<term> polynomialSupplement(std::vector<term> a, std::vector<term> b, term term);
+    static std::vector<term> polynomialDivision(std::vector<term> a, std::vector<term> b);
+    static std::vector<term> cyclotomicPolynomialRecursive(BigInt n, BigInt m);
 public:
-    std::vector<BigModInt> cyclotomicPolynomial(BigInt n, BigInt m);
+    static Polynomial cyclotomicPolynomial(BigInt n, BigInt m);
 };
 
 

@@ -4,6 +4,8 @@
 #include "PrimeProbabilityChecker.h"
 #include "EulerPhiCarmichaelLambda.h"
 #include "IrreduciblePolynomial.h"
+#include "CyclotomicPolynomial.h"
+#include "sqrt.h"
 
 
 #include <limits>
@@ -36,8 +38,26 @@ QString NumberCalculator::calculate(std::size_t op_index, const BigModInt& a, co
             return QString((a/b).getNumber().GetString().c_str());
             break;
         }
-        case 4:{
-            return QString((a+b).getNumber().GetString().c_str()); // ///////////////// need to add implementation of task 4 fast powering
+        case 4:{ // fast powering
+
+            // check if input is not bigger than MAX of int (because algo doesn't support BigInt)
+            if (a.getModulus() > BigInt(std::to_string(std::numeric_limits<int>::max())) ||
+                    a.getNumber() > BigInt(std::to_string(std::numeric_limits<int>::max())) ||
+                    b.getNumber() > BigInt(std::to_string(std::numeric_limits<int>::max())))
+            {
+                throw std::invalid_argument("BigInt does not supported by this algo");
+            }
+
+
+            int base_int = std::stoi(a.getNumber().GetString());
+            int exponent_int = std::stoi(b.getNumber().GetString());
+            int modulus_int = std::stoi(a.getModulus().GetString());
+
+            int result_int = Sqrt::powerMod(base_int, exponent_int, modulus_int);
+
+            QString result = QString{std::to_string(result_int).c_str()};
+
+            return result;
             break;
         }
         default:{
@@ -123,10 +143,22 @@ QString NumberCalculator::calcModIntFunction(std::size_t algo_index, const BigMo
             return QString(result.getNumber().GetString().c_str());
             break;
         }
-        case 1:{
-            BigModInt result = BigModInt(0, 5);
-          //  return QString(result.getNumber().GetString().c_str()); // //////////////////////// need to add implementation of Square root (task 6)
-            return "Need to add implementation of square root";
+        case 1:{ // sqrt
+            // check if input is not bigger than MAX of int (because algo doesn't support BigInt)
+            if (number.getModulus() > BigInt(std::to_string(std::numeric_limits<int>::max())) ||
+                    number.getNumber() > BigInt(std::to_string(std::numeric_limits<int>::max())))
+            {
+                throw std::invalid_argument("BigInt does not supported by this algo");
+            }
+
+            int number_int = std::stoi(number.getNumber().GetString());
+            int modulus_int = std::stoi(number.getModulus().GetString());
+
+            int result_int = Sqrt::calcSquareRoot(number_int, modulus_int);
+
+            QString result = QString{std::to_string(result_int).c_str()};
+
+            return result;
             break;
         }
         default:{
@@ -153,7 +185,6 @@ QString NumberCalculator::calcLog(const BigModInt& number, const BigModInt& base
     LL modulus_int = std::stoi(number.getModulus().GetString());
 
     LL result_int = baby_step_giant_step_discrete_logarithm(base_int, number_int, modulus_int);
-//    LL result_int = baby_step_giant_step_discrete_logarithm(2, 4, 5);
 
     QString result = "";
     if (result_int == -2){
@@ -260,14 +291,25 @@ std::pair<QString, QString> PolynomialRingCalculator::calcFractionRemainer(Polyn
 }
 
 QString PolynomialRingCalculator::calcCyclotomicPolynomial(BigInt modulus, BigInt order){
-    // ////// add implementation of cyclotomic polynomial order
     if (modulus <= 0){
         throw std::invalid_argument("Modulus must be > 0");
     }
     if (order <= 0){
         throw std::invalid_argument("Order must be > 0");
     }
-    return QString("This is a cyclotomic polynomial");
+
+    CyclotomicPolynomial generator;
+    std::vector<BigModInt> polynomial_coefs_non_format = generator.cyclotomicPolynomial(order, modulus);
+
+    std::vector<BigInt> polynomial_coefs;
+    for (const BigModInt& i : polynomial_coefs_non_format){
+        polynomial_coefs.push_back(i.getNumber());
+    }
+
+    Polynomial result_polynomial{polynomial_coefs, modulus};
+
+
+    return QString(result_polynomial.toString().c_str());
 }
 
 

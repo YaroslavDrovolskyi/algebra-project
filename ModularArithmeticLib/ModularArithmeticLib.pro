@@ -12,16 +12,19 @@ CONFIG += c++11
 SOURCES += \
     BigInt.cpp \
     BigModInt.cpp \
+    CyclotomicPolynomial.cpp \
     EulerPhiCarmichaelLambda.cpp \
     FiniteField.cpp \
     ModPolynomial.cpp \
     Polynomial.cpp \
     discrete_log.cpp \
-    pollard_fact.cpp
+    pollard_fact.cpp \
+    sqrt.cpp
 
 HEADERS += \
     BigInt.h \
     BigModInt.h \
+    CyclotomicPolynomial.h \
     EulerPhiCarmichaelLambda.h \
     FiniteField.h \
     IrreduciblePolynomial.h \
@@ -30,7 +33,8 @@ HEADERS += \
     Polynomial.h \
     PrimeProbabilityChecker.h \
     discrete_log.h \
-    pollard_fact.h
+    pollard_fact.h \
+    sqrt.h
 
 # Default rules for deployment.
 unix {

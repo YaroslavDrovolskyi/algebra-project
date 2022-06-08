@@ -2,8 +2,9 @@
 
 #pragma once
 #include <math.h>
+#include "ModularArithmeticLib_global.h"
 
-class Sqrt
+class MODULARARITHMETICLIB_EXPORT Sqrt
 {
 private:
 	static int gcd(int a, int b);

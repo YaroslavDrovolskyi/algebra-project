@@ -14,4 +14,4 @@ MODULARARITHMETICLIB_EXPORT int gcd(int a,int b, int& x,int& y); //рекурс�
 
 
 
-#endif //ALGEBRA_TASK5_EUCLIDEAN_ALGORITHM
+#endif 
